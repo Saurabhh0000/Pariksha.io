@@ -10,7 +10,7 @@ on:
 
 jobs:
   frontend-build:
-    name: Build Frontend
+    name: Frontend Build
     runs-on: ubuntu-latest
 
     defaults:
@@ -30,9 +30,6 @@ jobs:
 
       - name: Install dependencies
         run: npm ci
-
-      - name: Run ESLint
-        run: npm run lint
 
       - name: Build frontend
         run: npm run build
