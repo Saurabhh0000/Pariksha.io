@@ -1,0 +1,563 @@
+/* ═══════════════════════════════════════════
+   STUDENT MARKS — sm- prefix
+═══════════════════════════════════════════ */
+
+/* ── Hero ── */
+.sm-hero {
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  background: linear-gradient(135deg, var(--student-sidebar), var(--student-primary));
+  border-radius: 20px;
+  padding: 24px 28px;
+  color: #fff;
+  margin-bottom: 16px;
+}
+
+.sm-hero-decor {
+  position: absolute;
+  top: -40%;
+  right: -8%;
+  width: 240px;
+  height: 240px;
+  background: radial-gradient(circle, rgba(255,255,255,0.14), transparent 70%);
+  border-radius: 50%;
+  pointer-events: none;
+}
+
+.sm-hero-left {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.sm-hero-label {
+  font-size: 12.5px;
+  font-weight: 700;
+  color: rgba(255, 255, 255, 0.78);
+}
+
+.sm-hero-pct-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.sm-hero-pct {
+  font-size: 34px;
+  font-weight: 800;
+  color: #fff;
+  line-height: 1;
+}
+
+.sm-hero-sub {
+  font-size: 12.5px;
+  color: rgba(255, 255, 255, 0.75);
+  font-weight: 600;
+  margin-top: 4px;
+}
+
+.sm-badge {
+  font-size: 11px;
+  font-weight: 800;
+  padding: 4px 11px;
+  border-radius: 20px;
+}
+
+.sm-badge-onhero { background: rgba(255, 255, 255, 0.2); color: #fff; }
+.sm-badge-good    { background: #DCFCE7; color: #16A34A; }
+.sm-badge-avg     { background: #FEF3C7; color: #92400E; }
+.sm-badge-low     { background: #FEE2E2; color: #B91C1C; }
+.sm-badge-neutral { background: var(--student-bg); color: var(--student-subtext); }
+
+.sm-hero-ring {
+  position: relative;
+  z-index: 1;
+  width: 84px;
+  height: 84px;
+  flex-shrink: 0;
+}
+
+.sm-hero-ring-svg { width: 84px; height: 84px; transform: rotate(-90deg); }
+
+.sm-hero-ring-track {
+  fill: none;
+  stroke: rgba(255, 255, 255, 0.22);
+  stroke-width: 8;
+}
+
+.sm-hero-ring-fill {
+  fill: none;
+  stroke: #fff;
+  stroke-width: 8;
+  stroke-linecap: round;
+  transition: stroke-dashoffset 0.6s ease;
+}
+
+.sm-hero-ring-icon {
+  position: absolute;
+  inset: 0;
+  margin: auto;
+  color: #fff;
+  width: 22px;
+  height: 22px;
+}
+
+/* ── Card ── */
+.sm-card {
+  background: var(--student-card);
+  border: 1px solid var(--student-border);
+  border-radius: 18px;
+  padding: 20px;
+  margin-bottom: 16px;
+}
+
+.sm-card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 16px;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.sm-card-title-wrap {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: var(--student-text);
+}
+
+/* Section header icon — colored rounded chip, matches the
+   icon treatment used elsewhere on the page (subject icons,
+   record icons, hero ring icon) instead of a bare outline glyph */
+.sm-card-title-wrap > svg {
+  width: 34px;
+  height: 34px;
+  min-width: 34px;
+  padding: 8px;
+  box-sizing: border-box;
+  border-radius: 12px;
+  background: var(--student-accent);
+  color: var(--student-primary);
+  flex-shrink: 0;
+}
+
+.sm-card-title {
+  font-size: 15px;
+  font-weight: 800;
+  color: var(--student-text);
+}
+
+/* ── Subject summary grid ── */
+.sm-subject-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 14px;
+}
+
+.sm-subject-card {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  background: var(--student-bg);
+  border: 1px solid var(--student-border);
+  border-radius: 14px;
+  padding: 16px;
+}
+
+.sm-subject-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.sm-subject-icon {
+  width: 38px;
+  height: 38px;
+  min-width: 38px;
+  border-radius: 11px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.sm-subject-name {
+  font-size: 14.5px;
+  font-weight: 800;
+  color: var(--student-text);
+}
+
+.sm-subject-progress-track {
+  height: 6px;
+  border-radius: 4px;
+  background: var(--student-card);
+  overflow: hidden;
+}
+
+.sm-subject-progress-bar {
+  height: 100%;
+  border-radius: 4px;
+  transition: width 0.4s ease;
+}
+
+.sm-subject-meta-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.sm-subject-pct {
+  font-size: 15px;
+  font-weight: 800;
+  color: var(--student-text);
+}
+
+.sm-subject-marks {
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--student-subtext);
+}
+
+.sm-subject-exams-count {
+  font-size: 11px;
+  color: var(--student-subtext);
+  font-weight: 600;
+}
+
+/* ── Filter chips ── */
+.sm-filter-row {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-bottom: 16px;
+}
+
+.sm-filter-chip {
+  font-size: 12.5px;
+  font-weight: 700;
+  color: var(--student-subtext);
+  background: var(--student-bg);
+  border: 1px solid var(--student-border);
+  padding: 7px 14px;
+  border-radius: 20px;
+  cursor: pointer;
+  transition: background 0.15s ease, color 0.15s ease, border-color 0.15s ease;
+}
+
+.sm-filter-chip:hover {
+  background: var(--student-accent);
+}
+
+.sm-filter-chip-active {
+  background: var(--student-primary);
+  border-color: var(--student-primary);
+  color: #fff;
+}
+
+/* ── Empty state ── */
+.sm-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 36px 14px;
+  color: var(--student-subtext);
+  text-align: center;
+}
+
+.sm-empty p {
+  font-size: 13.5px;
+  font-weight: 700;
+  color: var(--student-text);
+  margin: 2px 0 0;
+}
+
+.sm-empty-sub {
+  font-size: 12px;
+  color: var(--student-subtext);
+}
+
+/* ── Record list ── */
+.sm-record-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.sm-record-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px;
+  border-radius: 12px;
+  background: var(--student-bg);
+}
+
+.sm-record-icon {
+  width: 36px;
+  height: 36px;
+  min-width: 36px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.sm-record-body {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+}
+
+.sm-record-subject {
+  font-size: 13.5px;
+  font-weight: 700;
+  color: var(--student-text);
+}
+
+.sm-record-meta {
+  font-size: 11.5px;
+  color: var(--student-subtext);
+  font-weight: 600;
+}
+
+.sm-record-score {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 2px;
+  flex-shrink: 0;
+}
+
+.sm-record-pct {
+  font-size: 13px;
+  font-weight: 800;
+  padding: 3px 10px;
+  border-radius: 20px;
+}
+
+.sm-record-raw {
+  font-size: 10.5px;
+  color: var(--student-subtext);
+  font-weight: 600;
+}
+
+/* ── Pagination ── */
+.sm-pagination {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-top: 16px;
+  padding-top: 14px;
+  border-top: 1px solid var(--student-border);
+  flex-wrap: wrap;
+}
+
+.sm-pagination-info {
+  font-size: 12.5px;
+  font-weight: 600;
+  color: var(--student-subtext);
+}
+
+.sm-pagination-controls {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.sm-page-btn {
+  min-width: 32px;
+  height: 32px;
+  padding: 0 8px;
+  border-radius: 8px;
+  background: var(--student-bg);
+  border: 1px solid var(--student-border);
+  color: var(--student-text);
+  font-size: 12.5px;
+  font-weight: 700;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.15s ease, color 0.15s ease, border-color 0.15s ease;
+}
+
+.sm-page-btn:hover:not(:disabled):not(.sm-page-btn-active) {
+  background: var(--student-accent);
+}
+
+.sm-page-btn:disabled {
+  opacity: 0.4;
+  cursor: default;
+}
+
+.sm-page-btn-active {
+  background: var(--student-primary);
+  border-color: var(--student-primary);
+  color: #fff;
+}
+
+/* ── Error state ── */
+.sm-error-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 60px 20px;
+  text-align: center;
+  background: var(--student-card);
+  border: 1px solid var(--student-border);
+  border-radius: 20px;
+}
+
+.sm-error-icon {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  background: #FEE2E2;
+  color: #DC2626;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 8px;
+}
+
+.sm-error-state h3 {
+  font-size: 17px;
+  font-weight: 800;
+  color: var(--student-text);
+  margin: 0;
+}
+
+.sm-error-state p {
+  font-size: 13.5px;
+  color: var(--student-subtext);
+  margin: 0;
+}
+
+.sm-error-sub {
+  font-size: 12px;
+  color: var(--student-subtext);
+  opacity: 0.75;
+  margin-bottom: 16px;
+}
+
+.sm-retry-btn {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: linear-gradient(135deg, var(--student-primary), var(--student-sidebar));
+  color: #fff;
+  border: none;
+  padding: 0 24px;
+  height: 46px;
+  border-radius: 12px;
+  font-size: 13.5px;
+  font-weight: 700;
+  cursor: pointer;
+  box-shadow: 0 4px 14px rgba(15, 110, 86, 0.28);
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.sm-retry-btn:hover:not(:disabled) {
+  transform: translateY(-1px);
+  box-shadow: 0 6px 18px rgba(15, 110, 86, 0.36);
+}
+.sm-retry-btn:disabled { opacity: 0.7; cursor: default; }
+
+/* ── Skeletons ── */
+@keyframes sm-shimmer {
+  0% { background-position: 100% 0; }
+  100% { background-position: -100% 0; }
+}
+
+.sm-skel-hero {
+  height: 130px;
+  border-radius: 20px;
+  background: linear-gradient(90deg, var(--student-card) 25%, var(--student-bg) 37%, var(--student-card) 63%);
+  background-size: 400% 100%;
+  animation: sm-shimmer 1.4s ease infinite;
+  margin-bottom: 16px;
+}
+
+.sm-skel-cards-row {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 14px;
+  margin-bottom: 16px;
+}
+
+.sm-skel-card {
+  height: 140px;
+  border-radius: 14px;
+  background: linear-gradient(90deg, var(--student-card) 25%, var(--student-bg) 37%, var(--student-card) 63%);
+  background-size: 400% 100%;
+  animation: sm-shimmer 1.4s ease infinite;
+}
+
+.sm-skel-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.sm-skel-row {
+  height: 64px;
+  border-radius: 12px;
+  background: linear-gradient(90deg, var(--student-card) 25%, var(--student-bg) 37%, var(--student-card) 63%);
+  background-size: 400% 100%;
+  animation: sm-shimmer 1.4s ease infinite;
+}
+
+/* ═══════════════════════════════════════════
+   RESPONSIVE — TABLET (≤768px)
+═══════════════════════════════════════════ */
+@media (max-width: 768px) {
+  .sm-hero { padding: 20px; }
+  .sm-card { padding: 16px; }
+  .sm-subject-grid,
+  .sm-skel-cards-row {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+/* ═══════════════════════════════════════════
+   RESPONSIVE — MOBILE (≤480px)
+═══════════════════════════════════════════ */
+@media (max-width: 480px) {
+  .sm-hero { flex-direction: column; align-items: flex-start; gap: 16px; padding: 18px; border-radius: 16px; }
+  .sm-hero-ring { align-self: center; }
+  .sm-hero-pct { font-size: 28px; }
+
+  .sm-subject-grid,
+  .sm-skel-cards-row {
+    grid-template-columns: 1fr;
+  }
+
+  .sm-card { padding: 14px; border-radius: 16px; }
+  .sm-card-title { font-size: 14px; }
+
+  .sm-record-item { padding: 10px; gap: 10px; }
+  .sm-record-icon { width: 32px; height: 32px; min-width: 32px; }
+
+  .sm-pagination {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+  }
+}
+
+@media (max-width: 360px) {
+  .sm-filter-chip { font-size: 11.5px; padding: 6px 11px; }
+}

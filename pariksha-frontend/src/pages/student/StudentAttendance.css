@@ -1,0 +1,640 @@
+/* ═══════════════════════════════════════════
+   STUDENT ATTENDANCE — sa- prefix
+═══════════════════════════════════════════ */
+
+/* ── Hero ── */
+.sa-hero {
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  background: linear-gradient(135deg, var(--student-sidebar), var(--student-primary));
+  border-radius: 20px;
+  padding: 24px 28px;
+  color: #fff;
+  margin-bottom: 16px;
+}
+
+.sa-hero-decor {
+  position: absolute;
+  top: -40%;
+  right: -8%;
+  width: 240px;
+  height: 240px;
+  background: radial-gradient(circle, rgba(255,255,255,0.14), transparent 70%);
+  border-radius: 50%;
+  pointer-events: none;
+}
+
+.sa-hero-left {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.sa-hero-label {
+  font-size: 12.5px;
+  font-weight: 700;
+  color: rgba(255, 255, 255, 0.78);
+}
+
+.sa-hero-pct-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.sa-hero-pct {
+  font-size: 34px;
+  font-weight: 800;
+  color: #fff;
+  line-height: 1;
+}
+
+.sa-hero-sub {
+  font-size: 12.5px;
+  color: rgba(255, 255, 255, 0.75);
+  font-weight: 600;
+  margin-top: 4px;
+}
+
+.sa-badge {
+  font-size: 11px;
+  font-weight: 800;
+  padding: 4px 11px;
+  border-radius: 20px;
+}
+
+.sa-badge-good    { background: rgba(220, 252, 231, 0.9); color: #16A34A; }
+.sa-badge-avg     { background: rgba(254, 243, 199, 0.9); color: #92400E; }
+.sa-badge-low     { background: rgba(254, 226, 226, 0.9); color: #B91C1C; }
+.sa-badge-neutral { background: rgba(255, 255, 255, 0.2); color: #fff; }
+
+.sa-hero-ring {
+  position: relative;
+  z-index: 1;
+  width: 84px;
+  height: 84px;
+  flex-shrink: 0;
+}
+
+.sa-hero-ring-svg { width: 84px; height: 84px; transform: rotate(-90deg); }
+
+.sa-hero-ring-track {
+  fill: none;
+  stroke: rgba(255, 255, 255, 0.22);
+  stroke-width: 8;
+}
+
+.sa-hero-ring-fill {
+  fill: none;
+  stroke: #fff;
+  stroke-width: 8;
+  stroke-linecap: round;
+  transition: stroke-dashoffset 0.6s ease;
+}
+
+.sa-hero-ring-icon {
+  position: absolute;
+  inset: 0;
+  margin: auto;
+  color: #fff;
+  width: 22px;
+  height: 22px;
+}
+
+/* ══════════════════════════════════════════════════
+   STATS GRID
+   Redesigned to match TeacherMarks.css's .tm-stat-card
+   language: gradient tint background, colored border,
+   diagonal gloss corner, icon rotate-on-hover, and a
+   color-matched value. These cards get their color per
+   status (Present/Absent/Late/Half Day) from inline
+   CSS custom properties (--stat-color / --stat-bg) set
+   on each card in the JSX, rather than fixed className
+   variants, since the color set is data-driven here —
+   everything else about the card is pure CSS below.
+══════════════════════════════════════════════════ */
+.sa-stats-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 14px;
+  margin-bottom: 16px;
+}
+
+.sa-stat-card {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 16px 18px;
+  border-radius: 16px;
+  border: 1.5px solid transparent;
+  background: linear-gradient(135deg, var(--stat-bg, var(--student-bg)) 0%, var(--student-card) 100%);
+  border-color: color-mix(in srgb, var(--stat-color, var(--student-primary)) 32%, transparent);
+  box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+  transition: transform 0.22s cubic-bezier(0.22,1,0.36,1),
+              box-shadow 0.22s;
+  cursor: default;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Subtle diagonal gloss strip, tinted per status colour */
+.sa-stat-card::after {
+  content: "";
+  position: absolute;
+  top: -30%;
+  right: -20%;
+  width: 60%;
+  height: 160%;
+  border-radius: 50%;
+  background: var(--stat-color, var(--student-primary));
+  opacity: 0.06;
+  pointer-events: none;
+}
+
+.sa-stat-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 24px rgba(0,0,0,0.10);
+}
+
+/* Icon circle — colour comes from the --stat-bg/--stat-color vars */
+.sa-stat-icon {
+  width: 46px;
+  height: 46px;
+  min-width: 46px;
+  border-radius: 13px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  background: var(--stat-bg, var(--student-accent));
+  color: var(--stat-color, var(--student-primary));
+  transition: transform 0.22s;
+}
+.sa-stat-card:hover .sa-stat-icon { transform: scale(1.08) rotate(-4deg); }
+
+.sa-stat-info {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+  min-width: 0;
+  flex: 1;
+}
+
+.sa-stat-value {
+  font-size: 22px;
+  font-weight: 800;
+  color: var(--stat-color, var(--student-text));
+  letter-spacing: -0.04em;
+  line-height: 1.1;
+}
+
+.sa-stat-label {
+  font-size: 12.5px;
+  font-weight: 700;
+  color: var(--student-text);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* ── Card ── */
+.sa-card {
+  background: var(--student-card);
+  border: 1px solid var(--student-border);
+  border-radius: 18px;
+  padding: 20px;
+  margin-bottom: 16px;
+}
+
+.sa-card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 16px;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.sa-card-title {
+  font-size: 15px;
+  font-weight: 800;
+  color: var(--student-text);
+}
+
+/* ── Calendar nav ── */
+.sa-calendar-nav {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.sa-nav-btn {
+  width: 32px;
+  height: 32px;
+  border-radius: 9px;
+  background: var(--student-bg);
+  border: 1px solid var(--student-border);
+  color: var(--student-text);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: background 0.15s ease;
+}
+
+.sa-nav-btn:hover:not(:disabled) { background: var(--student-accent); }
+.sa-nav-btn:disabled { opacity: 0.4; cursor: default; }
+
+.sa-today-btn {
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--student-primary);
+  background: var(--student-accent);
+  border: none;
+  padding: 7px 14px;
+  border-radius: 9px;
+  cursor: pointer;
+}
+
+.sa-today-btn:hover { opacity: 0.85; }
+
+/* ── Calendar grid ── */
+.sa-calendar-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 6px;
+}
+
+.sa-calendar-weekdays {
+  margin-bottom: 8px;
+}
+
+.sa-weekday-label {
+  text-align: center;
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--student-subtext);
+  padding: 4px 0;
+}
+
+/* Taller cell so the status text has room beneath the day number */
+.sa-calendar-cell {
+  aspect-ratio: unset;
+  min-height: 58px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  border-radius: 10px;
+  background: var(--student-bg);
+  padding: 6px 2px;
+}
+
+.sa-cell-empty {
+  background: transparent;
+}
+
+.sa-cell-today {
+  box-shadow: 0 0 0 2px var(--student-primary) inset;
+}
+
+.sa-cell-today .sa-cell-day {
+  font-weight: 800;
+}
+
+.sa-cell-day {
+  font-size: 12.5px;
+  font-weight: 600;
+  color: var(--student-text);
+}
+
+.sa-cell-marked {
+  background: var(--student-card);
+  border: 1px solid var(--student-border);
+}
+
+/* Status text pill instead of a bare dot */
+.sa-cell-status {
+  font-size: 8.5px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.2px;
+  padding: 2px 6px;
+  border-radius: 8px;
+  line-height: 1.3;
+  white-space: nowrap;
+}
+
+/* ── Legend ── */
+.sa-legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 14px;
+  margin-top: 16px;
+  padding-top: 14px;
+  border-top: 1px solid var(--student-border);
+}
+
+.sa-legend-item {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 11.5px;
+  font-weight: 600;
+  color: var(--student-subtext);
+}
+
+.sa-legend-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+}
+
+/* ── Empty state ── */
+.sa-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 36px 14px;
+  color: var(--student-subtext);
+  text-align: center;
+}
+
+.sa-empty p {
+  font-size: 13.5px;
+  font-weight: 700;
+  color: var(--student-text);
+  margin: 2px 0 0;
+}
+
+.sa-empty-sub {
+  font-size: 12px;
+  color: var(--student-subtext);
+}
+
+/* ── Record list ── */
+.sa-record-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.sa-record-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 12px;
+  border-radius: 12px;
+  background: var(--student-bg);
+}
+
+.sa-record-icon {
+  width: 34px;
+  height: 34px;
+  min-width: 34px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.sa-record-body {
+  flex: 1;
+  min-width: 0;
+}
+
+.sa-record-date {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--student-text);
+}
+
+.sa-record-status {
+  font-size: 11px;
+  font-weight: 800;
+  padding: 4px 10px;
+  border-radius: 20px;
+  flex-shrink: 0;
+}
+
+/* ── Pagination (matches Teacher module standard) ── */
+.sa-pagination {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-top: 16px;
+  padding-top: 14px;
+  border-top: 1px solid var(--student-border);
+  flex-wrap: wrap;
+}
+
+.sa-pagination-info {
+  font-size: 12.5px;
+  font-weight: 600;
+  color: var(--student-subtext);
+}
+
+.sa-pagination-controls {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.sa-page-btn {
+  min-width: 32px;
+  height: 32px;
+  padding: 0 8px;
+  border-radius: 8px;
+  background: var(--student-bg);
+  border: 1px solid var(--student-border);
+  color: var(--student-text);
+  font-size: 12.5px;
+  font-weight: 700;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.15s ease, color 0.15s ease, border-color 0.15s ease;
+}
+
+.sa-page-btn:hover:not(:disabled):not(.sa-page-btn-active) {
+  background: var(--student-accent);
+}
+
+.sa-page-btn:disabled {
+  opacity: 0.4;
+  cursor: default;
+}
+
+.sa-page-btn-active {
+  background: var(--student-primary);
+  border-color: var(--student-primary);
+  color: #fff;
+}
+
+/* ── Error state ── */
+.sa-error-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 60px 20px;
+  text-align: center;
+  background: var(--student-card);
+  border: 1px solid var(--student-border);
+  border-radius: 20px;
+}
+
+.sa-error-icon {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  background: #FEE2E2;
+  color: #DC2626;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 8px;
+}
+
+.sa-error-state h3 {
+  font-size: 17px;
+  font-weight: 800;
+  color: var(--student-text);
+  margin: 0;
+}
+
+.sa-error-state p {
+  font-size: 13.5px;
+  color: var(--student-subtext);
+  margin: 0;
+}
+
+.sa-error-sub {
+  font-size: 12px;
+  color: var(--student-subtext);
+  opacity: 0.75;
+  margin-bottom: 16px;
+}
+
+.sa-retry-btn {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: linear-gradient(135deg, var(--student-primary), var(--student-sidebar));
+  color: #fff;
+  border: none;
+  padding: 0 24px;
+  height: 46px;
+  border-radius: 12px;
+  font-size: 13.5px;
+  font-weight: 700;
+  cursor: pointer;
+  box-shadow: 0 4px 14px rgba(15, 110, 86, 0.28);
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.sa-retry-btn:hover:not(:disabled) {
+  transform: translateY(-1px);
+  box-shadow: 0 6px 18px rgba(15, 110, 86, 0.36);
+}
+.sa-retry-btn:disabled { opacity: 0.7; cursor: default; }
+
+/* ── Skeletons ── */
+@keyframes sa-shimmer {
+  0% { background-position: 100% 0; }
+  100% { background-position: -100% 0; }
+}
+
+.sa-skel-hero {
+  height: 130px;
+  border-radius: 20px;
+  background: linear-gradient(90deg, var(--student-card) 25%, var(--student-bg) 37%, var(--student-card) 63%);
+  background-size: 400% 100%;
+  animation: sa-shimmer 1.4s ease infinite;
+  margin-bottom: 16px;
+}
+
+.sa-skel-stats-row {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 14px;
+  margin-bottom: 16px;
+}
+
+.sa-skel-stat {
+  height: 68px;
+  border-radius: 14px;
+  background: linear-gradient(90deg, var(--student-card) 25%, var(--student-bg) 37%, var(--student-card) 63%);
+  background-size: 400% 100%;
+  animation: sa-shimmer 1.4s ease infinite;
+}
+
+.sa-skel-calendar {
+  height: 380px;
+  border-radius: 18px;
+  background: linear-gradient(90deg, var(--student-card) 25%, var(--student-bg) 37%, var(--student-card) 63%);
+  background-size: 400% 100%;
+  animation: sa-shimmer 1.4s ease infinite;
+}
+
+/* ═══════════════════════════════════════════
+   RESPONSIVE — TABLET (≤768px)
+═══════════════════════════════════════════ */
+@media (max-width: 768px) {
+  .sa-stats-grid { grid-template-columns: repeat(2, 1fr); }
+  .sa-hero { padding: 20px; }
+  .sa-card { padding: 16px; }
+}
+
+/* ═══════════════════════════════════════════
+   RESPONSIVE — MOBILE (≤480px)
+═══════════════════════════════════════════ */
+@media (max-width: 480px) {
+  .sa-hero { flex-direction: column; align-items: flex-start; gap: 16px; padding: 18px; border-radius: 16px; }
+  .sa-hero-ring { align-self: center; }
+  .sa-hero-pct { font-size: 28px; }
+
+  .sa-stats-grid { grid-template-columns: repeat(2, 1fr); gap: 10px; }
+  .sa-stat-card { padding: 12px 14px; gap: 10px; }
+  .sa-stat-icon { width: 38px; height: 38px; min-width: 38px; border-radius: 10px; }
+  .sa-stat-value { font-size: 18px; }
+  .sa-stat-label { font-size: 11.5px; white-space: normal; }
+
+  .sa-card { padding: 14px; border-radius: 16px; }
+  .sa-card-title { font-size: 14px; }
+
+  .sa-calendar-cell { min-height: 48px; border-radius: 8px; }
+  .sa-cell-day { font-size: 11px; }
+  .sa-cell-status { font-size: 7.5px; padding: 1px 4px; }
+
+  .sa-legend { gap: 10px; }
+  .sa-legend-item { font-size: 10.5px; }
+
+  .sa-pagination {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+  }
+
+  .sa-pagination-controls {
+    flex-wrap: wrap;
+  }
+}
+
+@media (max-width: 360px) {
+  .sa-stats-grid { grid-template-columns: repeat(2, 1fr); }
+  .sa-calendar-cell { min-height: 44px; }
+  .sa-cell-status { font-size: 7px; }
+}

@@ -1,0 +1,527 @@
+/* ═══════════════════════════════════════════
+   STUDENT PAPERS — sp- prefix
+═══════════════════════════════════════════ */
+
+/* ── Hero ── */
+.sp-hero {
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  background: linear-gradient(135deg, var(--student-sidebar), var(--student-primary));
+  border-radius: 20px;
+  padding: 24px 28px;
+  color: #fff;
+  margin-bottom: 16px;
+}
+
+.sp-hero-decor {
+  position: absolute;
+  top: -40%;
+  right: -8%;
+  width: 240px;
+  height: 240px;
+  background: radial-gradient(circle, rgba(255,255,255,0.14), transparent 70%);
+  border-radius: 50%;
+  pointer-events: none;
+}
+
+.sp-hero-left {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.sp-hero-label {
+  font-size: 12.5px;
+  font-weight: 700;
+  color: rgba(255, 255, 255, 0.78);
+}
+
+.sp-hero-value-row {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+}
+
+.sp-hero-value {
+  font-size: 34px;
+  font-weight: 800;
+  color: #fff;
+  line-height: 1;
+}
+
+.sp-hero-value-label {
+  font-size: 13px;
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.8);
+}
+
+.sp-hero-sub {
+  font-size: 12.5px;
+  color: rgba(255, 255, 255, 0.75);
+  font-weight: 600;
+  margin-top: 4px;
+}
+
+.sp-hero-icon {
+  position: relative;
+  z-index: 1;
+  width: 64px;
+  height: 64px;
+  min-width: 64px;
+  border-radius: 18px;
+  background: rgba(255, 255, 255, 0.16);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+}
+
+/* ── Card ── */
+.sp-card {
+  background: var(--student-card);
+  border: 1px solid var(--student-border);
+  border-radius: 18px;
+  padding: 20px;
+  margin-bottom: 16px;
+}
+
+.sp-card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 16px;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.sp-card-title-wrap {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: var(--student-text);
+}
+
+.sp-card-title-wrap > svg {
+  width: 34px;
+  height: 34px;
+  min-width: 34px;
+  padding: 8px;
+  box-sizing: border-box;
+  border-radius: 12px;
+  background: var(--student-accent);
+  color: var(--student-primary);
+  flex-shrink: 0;
+}
+
+.sp-card-title {
+  font-size: 15px;
+  font-weight: 800;
+  color: var(--student-text);
+}
+
+/* ── Filter chips ── */
+.sp-filter-row {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-bottom: 16px;
+}
+
+.sp-filter-chip {
+  font-size: 12.5px;
+  font-weight: 700;
+  color: var(--student-subtext);
+  background: var(--student-bg);
+  border: 1px solid var(--student-border);
+  padding: 7px 14px;
+  border-radius: 20px;
+  cursor: pointer;
+  transition: background 0.15s ease, color 0.15s ease, border-color 0.15s ease;
+}
+
+.sp-filter-chip:hover {
+  background: var(--student-accent);
+}
+
+.sp-filter-chip-active {
+  background: var(--student-primary);
+  border-color: var(--student-primary);
+  color: #fff;
+}
+
+/* ── Empty state ── */
+.sp-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 36px 14px;
+  color: var(--student-subtext);
+  text-align: center;
+}
+
+.sp-empty p {
+  font-size: 13.5px;
+  font-weight: 700;
+  color: var(--student-text);
+  margin: 2px 0 0;
+}
+
+.sp-empty-sub {
+  font-size: 12px;
+  color: var(--student-subtext);
+}
+
+/* ── Paper list ── */
+.sp-paper-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.sp-paper-card {
+  background: var(--student-bg);
+  border: 1px solid var(--student-border);
+  border-radius: 14px;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.sp-paper-top {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+}
+
+.sp-paper-icon {
+  width: 42px;
+  height: 42px;
+  min-width: 42px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.sp-paper-info {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.sp-paper-title-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.sp-paper-title {
+  font-size: 14.5px;
+  font-weight: 800;
+  color: var(--student-text);
+}
+
+.sp-ai-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  font-size: 9.5px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.3px;
+  color: #7C3AED;
+  background: #EDE9FE;
+  padding: 2px 8px;
+  border-radius: 20px;
+}
+
+.sp-paper-tags {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.sp-subject-chip {
+  font-size: 11px;
+  font-weight: 800;
+  padding: 3px 10px;
+  border-radius: 20px;
+}
+
+.sp-tag {
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--student-subtext);
+  background: var(--student-card);
+  border: 1px solid var(--student-border);
+  padding: 3px 10px;
+  border-radius: 20px;
+}
+
+.sp-status-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 10.5px;
+  font-weight: 800;
+  padding: 4px 10px;
+  border-radius: 20px;
+  flex-shrink: 0;
+  white-space: nowrap;
+}
+
+.sp-paper-meta {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  flex-wrap: wrap;
+  padding-top: 4px;
+  border-top: 1px solid var(--student-border);
+  padding-top: 10px;
+}
+
+.sp-meta-item {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--student-subtext);
+}
+
+.sp-meta-date {
+  margin-left: auto;
+}
+
+.sp-download-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  background: var(--student-primary);
+  color: #fff;
+  border: none;
+  height: 42px;
+  border-radius: 10px;
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: opacity 0.15s ease;
+  align-self: flex-start;
+  padding: 0 18px;
+}
+
+.sp-download-btn:hover:not(:disabled) {
+  opacity: 0.9;
+}
+
+.sp-download-btn:disabled {
+  opacity: 0.7;
+  cursor: default;
+}
+
+/* ── Pagination ── */
+.sp-pagination {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-top: 16px;
+  padding-top: 14px;
+  border-top: 1px solid var(--student-border);
+  flex-wrap: wrap;
+}
+
+.sp-pagination-info {
+  font-size: 12.5px;
+  font-weight: 600;
+  color: var(--student-subtext);
+}
+
+.sp-pagination-controls {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.sp-page-btn {
+  min-width: 32px;
+  height: 32px;
+  padding: 0 8px;
+  border-radius: 8px;
+  background: var(--student-bg);
+  border: 1px solid var(--student-border);
+  color: var(--student-text);
+  font-size: 12.5px;
+  font-weight: 700;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.15s ease, color 0.15s ease, border-color 0.15s ease;
+}
+
+.sp-page-btn:hover:not(:disabled):not(.sp-page-btn-active) {
+  background: var(--student-accent);
+}
+
+.sp-page-btn:disabled {
+  opacity: 0.4;
+  cursor: default;
+}
+
+.sp-page-btn-active {
+  background: var(--student-primary);
+  border-color: var(--student-primary);
+  color: #fff;
+}
+
+/* ── Error state ── */
+.sp-error-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 60px 20px;
+  text-align: center;
+  background: var(--student-card);
+  border: 1px solid var(--student-border);
+  border-radius: 20px;
+}
+
+.sp-error-icon {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  background: #FEE2E2;
+  color: #DC2626;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 8px;
+}
+
+.sp-error-state h3 {
+  font-size: 17px;
+  font-weight: 800;
+  color: var(--student-text);
+  margin: 0;
+}
+
+.sp-error-state p {
+  font-size: 13.5px;
+  color: var(--student-subtext);
+  margin: 0;
+}
+
+.sp-error-sub {
+  font-size: 12px;
+  color: var(--student-subtext);
+  opacity: 0.75;
+  margin-bottom: 16px;
+}
+
+.sp-retry-btn {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: linear-gradient(135deg, var(--student-primary), var(--student-sidebar));
+  color: #fff;
+  border: none;
+  padding: 0 24px;
+  height: 46px;
+  border-radius: 12px;
+  font-size: 13.5px;
+  font-weight: 700;
+  cursor: pointer;
+  box-shadow: 0 4px 14px rgba(15, 110, 86, 0.28);
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.sp-retry-btn:hover:not(:disabled) {
+  transform: translateY(-1px);
+  box-shadow: 0 6px 18px rgba(15, 110, 86, 0.36);
+}
+.sp-retry-btn:disabled { opacity: 0.7; cursor: default; }
+
+/* ── Skeletons ── */
+@keyframes sp-shimmer {
+  0% { background-position: 100% 0; }
+  100% { background-position: -100% 0; }
+}
+
+.sp-skel-hero {
+  height: 130px;
+  border-radius: 20px;
+  background: linear-gradient(90deg, var(--student-card) 25%, var(--student-bg) 37%, var(--student-card) 63%);
+  background-size: 400% 100%;
+  animation: sp-shimmer 1.4s ease infinite;
+  margin-bottom: 16px;
+}
+
+.sp-skel-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.sp-skel-row {
+  height: 150px;
+  border-radius: 14px;
+  background: linear-gradient(90deg, var(--student-card) 25%, var(--student-bg) 37%, var(--student-card) 63%);
+  background-size: 400% 100%;
+  animation: sp-shimmer 1.4s ease infinite;
+}
+
+/* ═══════════════════════════════════════════
+   RESPONSIVE — TABLET (≤768px)
+═══════════════════════════════════════════ */
+@media (max-width: 768px) {
+  .sp-hero { padding: 20px; }
+  .sp-card { padding: 16px; }
+}
+
+/* ═══════════════════════════════════════════
+   RESPONSIVE — MOBILE (≤480px)
+═══════════════════════════════════════════ */
+@media (max-width: 480px) {
+  .sp-hero { padding: 18px; border-radius: 16px; }
+  .sp-hero-value { font-size: 28px; }
+  .sp-hero-icon { width: 52px; height: 52px; min-width: 52px; }
+
+  .sp-card { padding: 14px; border-radius: 16px; }
+  .sp-card-title { font-size: 14px; }
+
+  .sp-paper-card { padding: 12px; gap: 10px; }
+  .sp-paper-top { flex-wrap: wrap; }
+  .sp-status-badge { margin-left: auto; }
+
+  .sp-paper-meta { gap: 10px; }
+  .sp-meta-date { margin-left: 0; width: 100%; }
+
+  .sp-download-btn { width: 100%; }
+
+  .sp-pagination {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+  }
+}
+
+@media (max-width: 360px) {
+  .sp-filter-chip { font-size: 11.5px; padding: 6px 11px; }
+}

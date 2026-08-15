@@ -1,0 +1,63 @@
+# ==========================================
+# Pariksha.io - Root Git Ignore
+# ==========================================
+
+# ------------------------------
+# Frontend - Node / React / Vite
+# ------------------------------
+pariksha-frontend/node_modules/
+pariksha-frontend/dist/
+pariksha-frontend/.vite/
+
+# Environment files
+pariksha-frontend/.env
+pariksha-frontend/.env.local
+pariksha-frontend/.env.development
+pariksha-frontend/.env.production
+
+# Logs
+pariksha-frontend/npm-debug.log*
+pariksha-frontend/yarn-debug.log*
+pariksha-frontend/yarn-error.log*
+pariksha-frontend/pnpm-debug.log*
+
+# ------------------------------
+# Backend - Maven / Spring Boot
+# ------------------------------
+pariksha-backend/target/
+
+# Environment / secrets
+pariksha-backend/.env
+pariksha-backend/.env.local
+
+# Logs
+pariksha-backend/*.log
+pariksha-backend/logs/
+
+# ------------------------------
+# IDE
+# ------------------------------
+.idea/
+*.iml
+
+.vscode/
+!.vscode/extensions.json
+!.vscode/settings.json
+
+# ------------------------------
+# OS
+# ------------------------------
+.DS_Store
+Thumbs.db
+
+# ------------------------------
+# Temporary files
+# ------------------------------
+*.tmp
+*.temp
+*.swp
+
+# ------------------------------
+# Runtime uploaded files
+# ------------------------------
+pariksha-backend/uploads/

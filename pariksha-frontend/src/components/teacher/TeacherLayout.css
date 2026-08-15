@@ -1,0 +1,1523 @@
+/* ═══════════════════════════════════════════════════
+   TeacherLayout.css — Fixed & Production-Grade
+   Pariksha.io — Faculty Workspace (Blue Theme)
+   Uses global --teacher-* vars from teacher.css
+═══════════════════════════════════════════════════ */
+
+/* ── CSS Variables ────────────────────────────────── */
+/* Sidebar and topbar dimensions in one place so every
+   calculation stays in sync if values ever change.    */
+:root {
+  --sidebar-width:    240px;
+  --sidebar-collapsed:  72px;
+  --topbar-height:     60px;
+  --bottom-nav-height: 64px;
+  --sidebar-transition: 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* ══════════════════════════════════════════════════
+   ROOT SHELL
+══════════════════════════════════════════════════ */
+.tl-root {
+  display: flex;
+  min-height: 100vh;
+  background: var(--teacher-bg);
+  position: relative;
+  /* Prevent any child from causing horizontal scroll */
+  overflow-x: hidden;
+}
+
+/* ══════════════════════════════════════════════════
+   AVATAR SYSTEM
+   FIX: Added overflow:hidden so photos never bleed
+   outside their border-radius.
+══════════════════════════════════════════════════ */
+.tl-avatar-wrap {
+  position: relative;
+  display: inline-flex;
+  flex-shrink: 0;
+  overflow: hidden;        /* ← fix: clip photo to radius */
+}
+
+.tl-avatar-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.tl-avatar-initials {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--teacher-primary);
+  color: #fff;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  line-height: 1;
+  user-select: none;
+}
+
+.tl-avatar-status {
+  position: absolute;
+  bottom: 2px;
+  right: 2px;
+  border-radius: 50%;
+  background: #38A169;
+  border: 2px solid #fff;
+  display: block;
+  z-index: 2;
+  /* Escape the overflow:hidden clip so the green dot shows */
+  /* Use outline trick so the white border is visible       */
+}
+
+/* ══════════════════════════════════════════════════
+   SIDEBAR
+   FIX #3 & #4: Consistent widths, proper collapse,
+   mobile slide-in, sticky brand+footer, scrollable nav.
+══════════════════════════════════════════════════ */
+.tl-sidebar {
+  width: var(--sidebar-width);
+  height: 100vh;
+  background: var(--teacher-sidebar);
+  display: flex;
+  flex-direction: column;
+  position: fixed;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  z-index: 200;
+  /* Smooth width collapse on desktop */
+  transition: width var(--sidebar-transition),
+              transform var(--sidebar-transition);
+  overflow: hidden;          /* clips content when collapsed */
+}
+
+/* Desktop collapsed state */
+.tl-collapsed .tl-sidebar {
+  width: var(--sidebar-collapsed);
+}
+
+/* FIX #4: Mobile — slide in from left, full-height, max 320px */
+@media (max-width: 768px) {
+  .tl-sidebar {
+    width: min(85vw, 320px) !important;  /* max 320px, 85vw on tiny screens */
+    transform: translateX(-100%);
+    box-shadow: none;
+    /* Override any desktop collapsed width */
+  }
+  .tl-sidebar.tl-sidebar-open {
+    transform: translateX(0);
+    box-shadow: 4px 0 32px rgba(0, 0, 0, 0.22);
+  }
+}
+
+/* ── Brand bar ─────────────────────────────────── */
+/* FIX #3: Sticky brand at top, consistent height   */
+.tl-brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 0 14px 0 16px;
+  height: var(--topbar-height);
+  min-height: var(--topbar-height);
+  flex-shrink: 0;            /* never compress */
+  border-bottom: 1px solid rgba(255, 255, 255, 0.10);
+  overflow: hidden;
+}
+
+/* When collapsed: center the logo */
+.tl-collapsed .tl-brand {
+  justify-content: center;
+  padding: 0;
+}
+
+.tl-brand-logo {
+  width: 34px;
+  height: 34px;
+  min-width: 34px;
+  background: rgba(255, 255, 255, 0.15);
+  border-radius: 9px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  flex-shrink: 0;
+  transition: background 0.2s;
+}
+.tl-brand-logo:hover { background: rgba(255, 255, 255, 0.22); }
+
+.tl-brand-text {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+}
+
+.tl-brand-name {
+  font-size: 14.5px;
+  font-weight: 800;
+  color: #fff;
+  letter-spacing: -0.3px;
+  white-space: nowrap;
+  line-height: 1.2;
+}
+
+.tl-brand-role {
+  font-size: 9.5px;
+  color: rgba(255, 255, 255, 0.50);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.6px;
+}
+
+/* ── Collapse / expand toggles ─────────────────── */
+/* FIX #3: Collapse button — flush right in brand  */
+.tl-collapse-toggle {
+  width: 26px;
+  height: 26px;
+  min-width: 26px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(255, 255, 255, 0.09);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 7px;
+  color: rgba(255, 255, 255, 0.70);
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s;
+  margin-left: auto;
+  flex-shrink: 0;
+}
+.tl-collapse-toggle:hover { background: rgba(255, 255, 255, 0.18); color: #fff; }
+
+/* Expand toggle: floating pill on the right edge of collapsed sidebar */
+.tl-expand-toggle {
+  position: absolute;
+  /* Sits at the bottom of the brand bar on the right edge */
+  top: calc(var(--topbar-height)/1.05);
+  right: 0.5px;             /* half outside the sidebar edge */
+  transform: translateY(-50%);
+  width: 22px;
+  height: 22px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #fff;
+  border: 1.5px solid var(--teacher-border);
+  border-radius: 50%;
+  color: var(--teacher-primary);
+  cursor: pointer;
+  z-index: 10;
+  box-shadow: 0 2px 8px rgba(24, 95, 165, 0.18);
+  transition: background 0.2s, box-shadow 0.2s;
+}
+.tl-expand-toggle:hover {
+  background: var(--teacher-accent);
+  box-shadow: 0 4px 12px rgba(24, 95, 165, 0.26);
+}
+
+/* Close button inside mobile sidebar */
+.tl-sidebar-close {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  min-width: 32px;
+  background: rgba(255, 255, 255, 0.10);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 8px;
+  color: rgba(255, 255, 255, 0.80);
+  cursor: pointer;
+  margin-left: auto;
+  flex-shrink: 0;
+  transition: background 0.15s;
+}
+.tl-sidebar-close:hover { background: rgba(255, 255, 255, 0.20); color: #fff; }
+
+/* ── Navigation area ────────────────────────────── */
+/* FIX #4: flex:1 + overflow-y:auto = scrollable nav */
+.tl-nav {
+  flex: 1;
+  padding: 10px 8px;
+  overflow-y: auto;
+  overflow-x: hidden;
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  /* Thin scrollbar */
+  scrollbar-width: thin;
+  scrollbar-color: rgba(255, 255, 255, 0.15) transparent;
+}
+.tl-nav::-webkit-scrollbar       { width: 3px; }
+.tl-nav::-webkit-scrollbar-track { background: transparent; }
+.tl-nav::-webkit-scrollbar-thumb { background: rgba(255, 255, 255, 0.15); border-radius: 3px; }
+
+/* FIX #1: Nav skeleton shown while profile loads */
+.tl-nav-skeleton {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: 8px 4px;
+}
+
+.tl-nav-skeleton-item {
+  display: block;
+  height: 38px;
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.08);
+  animation: tlNavShimmer 1.4s ease-in-out infinite;
+}
+
+@keyframes tlNavShimmer {
+  0%, 100% { opacity: 0.4; }
+  50%       { opacity: 0.8; }
+}
+
+/* Nav groups */
+.tl-nav-group {
+  margin-bottom: 4px;
+}
+
+.tl-nav-group-label {
+  font-size: 9.5px;
+  font-weight: 700;
+  color: rgba(255, 255, 255, 0.36);
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+  /* FIX #3: Consistent left padding aligns with nav items */
+  padding: 10px 10px 4px;
+  margin: 0;
+  white-space: nowrap;
+}
+
+/* FIX #3: Nav items — perfect icon + label alignment */
+.tl-nav-item {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 0 10px;
+  height: 40px;            /* fixed height for alignment */
+  margin-bottom: 2px;
+  border: none;
+  border-radius: 10px;
+  background: none;
+  color: rgba(255, 255, 255, 0.62);
+  cursor: pointer;
+  font-size: 13.5px;
+  font-weight: 500;
+  text-align: left;
+  transition: background 0.16s, color 0.16s;
+  white-space: nowrap;
+  overflow: hidden;
+  position: relative;
+  /* Removed translateX hover — causes layout shift */
+}
+
+.tl-nav-item:hover {
+  background: rgba(255, 255, 255, 0.10);
+  color: #fff;
+}
+
+.tl-nav-item:focus-visible {
+  outline: 2px solid rgba(255, 255, 255, 0.50);
+  outline-offset: 1px;
+}
+
+/* Collapsed: center the icon perfectly */
+.tl-collapsed .tl-nav-item {
+  justify-content: center;
+  padding: 0;
+  height: 44px;
+  border-radius: 10px;
+}
+
+.tl-nav-active {
+  background: rgba(255, 255, 255, 0.14) !important;
+  color: #fff !important;
+  font-weight: 600;
+}
+
+/* FIX #3: Active indicator — left accent bar */
+.tl-nav-active::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 8px;
+  bottom: 8px;
+  width: 3px;
+  background: var(--teacher-accent);
+  border-radius: 0 3px 3px 0;
+}
+/* Hide accent bar when collapsed (no room) */
+.tl-collapsed .tl-nav-active::before { display: none; }
+
+/* FIX #3: Icon always fixed-width so label aligns */
+.tl-nav-icon    { flex-shrink: 0; width: 18px; height: 18px; }
+.tl-nav-label   { flex: 1; overflow: hidden; text-overflow: ellipsis; }
+.tl-nav-chevron { color: rgba(255, 255, 255, 0.45); flex-shrink: 0; margin-left: auto; }
+
+/* ── Role badge ─────────────────────────────────── */
+.tl-role-badge {
+  display: inline-flex;
+  align-items: center;
+  height: 18px;
+  padding: 0 8px;
+  border-radius: 20px;
+  background: rgba(255, 255, 255, 0.15);
+  border: 1px solid rgba(255, 255, 255, 0.20);
+  color: rgba(255, 255, 255, 0.90);
+  font-size: 9.5px;
+  font-weight: 700;
+  letter-spacing: 0.4px;
+  text-transform: uppercase;
+  white-space: nowrap;
+  width: fit-content;
+  line-height: 1;
+  flex-shrink: 0;
+}
+
+/* Profile dropdown variant */
+.tl-profile-dropdown .tl-role-badge {
+  background: rgba(255, 255, 255, 0.18);
+  border-color: rgba(255, 255, 255, 0.25);
+  color: #fff;
+}
+
+/* ── Sidebar footer ──────────────────────────────
+   FIX #3 & #5: Footer never compresses, aligned
+   correctly in both expanded and collapsed states.
+─────────────────────────────────────────────────── */
+.tl-sidebar-footer {
+  flex-shrink: 0;
+  padding: 8px;
+  border-top: 1px solid rgba(255, 255, 255, 0.10);
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.tl-collapsed .tl-sidebar-footer {
+  align-items: center;
+}
+
+/* ── Teacher card (expanded) ─────────────────────
+   FIX #5: Better avatar + info alignment, no clipping
+─────────────────────────────────────────────────── */
+.tl-teacher-card {
+  background: rgba(255, 255, 255, 0.07);
+  border: 1px solid rgba(255, 255, 255, 0.10);
+  border-radius: 12px;
+  padding: 10px 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  transition: background 0.2s;
+  /* Prevent card from overflowing footer */
+  min-width: 0;
+}
+.tl-teacher-card:hover { background: rgba(255, 255, 255, 0.11); }
+
+.tl-teacher-card-top {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  min-width: 0;
+}
+
+.tl-teacher-card-info {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  min-width: 0;
+  flex: 1;
+  overflow: hidden;
+}
+
+.tl-teacher-card-name {
+  font-size: 13px;
+  font-weight: 700;
+  color: #fff;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  line-height: 1.2;
+}
+
+.tl-teacher-card-subject {
+  font-size: 11px;
+  color: rgba(255, 255, 255, 0.55);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.tl-teacher-card-code {
+  font-size: 10px;
+  font-weight: 700;
+  color: var(--teacher-accent);
+  letter-spacing: 0.4px;
+  font-family: 'Courier New', monospace;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Teacher card collapsed — avatar only, centered */
+.tl-teacher-card-collapsed {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 4px 0;
+}
+
+/* ── Metrics strip ────────────────────────────── */
+.tl-teacher-metrics {
+  display: flex;
+  align-items: center;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.09);
+  border-radius: 9px;
+  overflow: hidden;
+  flex-shrink: 0;
+}
+
+.tl-metric-card {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+  padding: 8px 4px;
+}
+
+.tl-metric-value {
+  font-size: 16px;
+  font-weight: 800;
+  color: #fff;
+  line-height: 1;
+  letter-spacing: -0.5px;
+}
+
+.tl-metric-label {
+  font-size: 9.5px;
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.45);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  white-space: nowrap;
+}
+
+.tl-metric-divider {
+  width: 1px;
+  height: 28px;
+  background: rgba(255, 255, 255, 0.10);
+  flex-shrink: 0;
+}
+
+.tl-metric-skeleton {
+  display: block;
+  width: 28px;
+  height: 16px;
+  border-radius: 4px;
+  background: rgba(255, 255, 255, 0.12);
+  animation: tlMetricShimmer 1.4s ease-in-out infinite;
+}
+
+@keyframes tlMetricShimmer {
+  0%, 100% { opacity: 0.5; }
+  50%       { opacity: 1;   }
+}
+
+/* ── Logout button ────────────────────────────── */
+.tl-logout-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  width: 100%;
+  height: 40px;
+  min-height: 40px;
+  padding: 0 10px;
+  background: rgba(255, 255, 255, 0.07);
+  border: 1px solid rgba(255, 255, 255, 0.10);
+  border-radius: 10px;
+  color: rgba(255, 255, 255, 0.60);
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s, border-color 0.2s;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.tl-collapsed .tl-logout-btn {
+  width: 44px;
+  height: 44px;
+  padding: 0;
+}
+
+.tl-logout-btn:hover {
+  background: rgba(229, 62, 62, 0.16);
+  color: #FCA5A5;
+  border-color: rgba(229, 62, 62, 0.22);
+}
+
+.tl-logout-btn:focus-visible {
+  outline: 2px solid rgba(255, 255, 255, 0.50);
+  outline-offset: 1px;
+}
+
+/* ══════════════════════════════════════════════════
+   OVERLAY
+═════════════════════════════════════════════════ */
+.tl-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.45);
+  z-index: 199;
+  animation: tlOverlayIn 0.2s ease;
+}
+
+@keyframes tlOverlayIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+/* ══════════════════════════════════════════════════
+   MAIN AREA
+   FIX #3: margin-left matches sidebar width exactly
+══════════════════════════════════════════════════ */
+.tl-main {
+  flex: 1;
+  margin-left: var(--sidebar-width);
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  transition: margin-left var(--sidebar-transition);
+  min-width: 0;
+  overflow-x: hidden;
+}
+
+.tl-collapsed .tl-main {
+  margin-left: var(--sidebar-collapsed);
+}
+
+@media (max-width: 768px) {
+  .tl-main {
+    margin-left: 0 !important;
+  }
+}
+
+/* ══════════════════════════════════════════════════
+   TOPBAR
+   FIX #7 & #8: Sticky, correct height, overflow-safe
+══════════════════════════════════════════════════ */
+.tl-topbar {
+  height: var(--topbar-height);
+  min-height: var(--topbar-height);
+  background: #fff;
+  border-bottom: 1px solid var(--teacher-border);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 20px;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  gap: 12px;
+  box-shadow: 0 1px 0 var(--teacher-border);
+  /* Prevent right-side content from overflowing */
+  overflow: visible;
+}
+
+.tl-topbar-left {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-width: 0;
+  flex: 1;
+  overflow: hidden;
+}
+
+.tl-title-wrap {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 1px;
+  min-width: 0;
+  overflow: hidden;
+}
+
+.tl-page-title {
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--teacher-text);
+  line-height: 1.3;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  margin: 0;
+}
+
+/* Breadcrumb */
+.tl-breadcrumb {
+  display: flex;
+  align-items: center;
+  flex-wrap: nowrap;
+  overflow: hidden;
+  max-width: 100%;
+}
+
+.tl-breadcrumb-home {
+  display: inline-flex;
+  align-items: center;
+  background: none;
+  border: none;
+  padding: 2px 3px;
+  color: var(--teacher-subtext);
+  cursor: pointer;
+  border-radius: 4px;
+  transition: color 0.15s;
+  flex-shrink: 0;
+}
+.tl-breadcrumb-home:hover { color: var(--teacher-primary); }
+
+.tl-breadcrumb-segment {
+  display: inline-flex;
+  align-items: center;
+  min-width: 0;
+  overflow: hidden;
+}
+
+.tl-breadcrumb-sep { color: #CBD5E1; flex-shrink: 0; margin: 0 2px; }
+
+.tl-breadcrumb-item {
+  background: none;
+  border: none;
+  padding: 0 2px;
+  font-size: 11px;
+  font-weight: 500;
+  color: var(--teacher-subtext);
+  cursor: pointer;
+  border-radius: 3px;
+  transition: color 0.15s;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 100px;
+}
+.tl-breadcrumb-item:hover { color: var(--teacher-primary); }
+
+.tl-breadcrumb-current {
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--teacher-primary);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 120px;
+}
+
+/* Hamburger — hidden on desktop */
+.tl-hamburger {
+  display: none;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  min-width: 36px;
+  background: none;
+  border: none;
+  color: var(--teacher-body);
+  cursor: pointer;
+  padding: 0;
+  border-radius: 8px;
+  transition: background 0.2s;
+  flex-shrink: 0;
+}
+.tl-hamburger:hover { background: var(--teacher-bg); }
+.tl-hamburger:focus-visible {
+  outline: 2px solid var(--teacher-primary);
+  outline-offset: 2px;
+}
+
+@media (max-width: 768px) {
+  .tl-hamburger { display: flex; }
+}
+
+/* Right side */
+.tl-topbar-right {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-shrink: 0;
+}
+
+/* ── Quick Actions button ─────────────────────── */
+/* FIX #8: Consistent height, mobile hides label  */
+.tl-quick-act-btn {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  height: 36px;
+  padding: 0 12px 0 10px;
+  background: linear-gradient(135deg, var(--teacher-primary), var(--teacher-sidebar));
+  color: #fff;
+  border: none;
+  border-radius: 9px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  box-shadow: 0 2px 8px rgba(24, 95, 165, 0.28);
+  transition: transform 0.15s, box-shadow 0.15s;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+.tl-quick-act-btn:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 14px rgba(24, 95, 165, 0.38);
+}
+.tl-quick-act-btn:focus-visible {
+  outline: 2px solid var(--teacher-primary);
+  outline-offset: 2px;
+}
+
+.tl-quick-act-label  { font-size: 13px; font-weight: 600; }
+
+.tl-quick-act-chevron {
+  transition: transform 0.2s;
+  opacity: 0.80;
+  flex-shrink: 0;
+}
+.tl-quick-act-chevron-open { transform: rotate(90deg); }
+
+/* ── Icon buttons (notif, etc.) ──────────────── */
+.tl-icon-btn {
+  width: 36px;
+  height: 36px;
+  min-width: 36px;
+  background: var(--teacher-bg);
+  border: 1.5px solid var(--teacher-border);
+  border-radius: 9px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--teacher-body);
+  cursor: pointer;
+  position: relative;
+  transition: background 0.2s, border-color 0.2s;
+  flex-shrink: 0;
+}
+.tl-icon-btn:hover {
+  background: var(--teacher-accent);
+  border-color: var(--teacher-primary);
+}
+.tl-icon-btn:focus-visible {
+  outline: 2px solid var(--teacher-primary);
+  outline-offset: 2px;
+}
+
+/* Notification badge */
+.tl-notif-badge {
+  position: absolute;
+  top: -5px;
+  right: -5px;
+  min-width: 17px;
+  height: 17px;
+  padding: 0 3px;
+  border-radius: 20px;
+  background: #E53E3E;
+  color: #fff;
+  font-size: 9.5px;
+  font-weight: 800;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 2px solid #fff;
+  line-height: 1;
+}
+
+/* ── Profile button ─────────────────────────── */
+.tl-dropdown-wrap { position: relative; }
+
+.tl-profile-btn {
+  display: flex;
+  align-items: center;
+  background: var(--teacher-bg);
+  border: 1.5px solid var(--teacher-border);
+  border-radius: 9px;
+  padding: 3px;
+  cursor: pointer;
+  transition: background 0.2s, border-color 0.2s;
+  flex-shrink: 0;
+}
+.tl-profile-btn:hover {
+  background: var(--teacher-accent);
+  border-color: var(--teacher-primary);
+}
+.tl-profile-btn:focus-visible {
+  outline: 2px solid var(--teacher-primary);
+  outline-offset: 2px;
+}
+
+/* ══════════════════════════════════════════════════
+   DROPDOWNS — shared base
+   FIX #6 #7 #8: Responsive widths, safe positioning
+══════════════════════════════════════════════════ */
+.tl-dropdown {
+  position: absolute;
+  top: calc(100% + 10px);
+  right: 0;
+  background: #fff;
+  border: 1.5px solid var(--teacher-border);
+  border-radius: 14px;
+  box-shadow: 0 16px 48px rgba(0, 0, 0, 0.13);
+  z-index: 300;
+  animation: tlDropIn 0.18s cubic-bezier(0.22, 1, 0.36, 1) both;
+  overflow: hidden;
+  /* Prevent dropdown from bleeding off-screen */
+  max-width: calc(100vw - 16px);
+}
+
+@keyframes tlDropIn {
+  from { opacity: 0; transform: translateY(-8px) scale(0.97); }
+  to   { opacity: 1; transform: translateY(0)    scale(1);    }
+}
+
+.tl-dropdown-divider {
+  height: 1px;
+  background: var(--teacher-border);
+  margin: 4px 0;
+}
+
+.tl-dropdown-group-label {
+  font-size: 10.5px;
+  font-weight: 700;
+  color: var(--teacher-subtext);
+  text-transform: uppercase;
+  letter-spacing: 0.6px;
+  padding: 8px 14px 4px;
+}
+
+/* FIX #8: Dropdown item — min-height for tap target */
+.tl-dropdown-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  min-height: 44px;        /* ← thumb-friendly */
+  padding: 0 12px;
+  background: none;
+  border: none;
+  font-size: 13.5px;
+  font-weight: 500;
+  color: var(--teacher-body);
+  cursor: pointer;
+  transition: background 0.14s;
+  text-align: left;
+}
+.tl-dropdown-item:hover {
+  background: var(--teacher-bg);
+  color: var(--teacher-text);
+}
+.tl-dropdown-item:focus-visible {
+  outline: 2px solid var(--teacher-primary);
+  outline-offset: -2px;
+}
+
+.tl-dropdown-item-label {
+  display: block;
+  font-size: 13.5px;
+  font-weight: 600;
+  color: var(--teacher-text);
+  line-height: 1.2;
+}
+
+.tl-dropdown-item-desc {
+  display: block;
+  font-size: 11px;
+  color: var(--teacher-subtext);
+  margin-top: 1px;
+  line-height: 1.3;
+}
+
+/* FIX #8: Icon square — consistent size */
+.tl-dropdown-item-icon {
+  width: 30px;
+  height: 30px;
+  min-width: 30px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.tl-dropdown-item-icon-blue   { background: #E6F1FB; color: #185FA5; }
+.tl-dropdown-item-icon-green  { background: #EAF4F0; color: #0F6E56; }
+.tl-dropdown-item-icon-purple { background: #EEEDFE; color: #534AB7; }
+.tl-dropdown-item-icon-red    { background: #FFF5F5; color: #E53E3E; }
+
+.tl-dropdown-item-danger { color: #E53E3E; }
+.tl-dropdown-item-danger:hover { background: #FFF5F5; }
+.tl-dropdown-item-danger .tl-dropdown-item-label { color: #E53E3E; }
+
+/* ── Quick Actions dropdown ─────────────────── */
+.tl-quick-act-dropdown {
+  width: 250px;
+  padding: 6px 0 8px;
+}
+
+/* ── Notifications dropdown ─────────────────── */
+/* FIX #7: Responsive width, capped on mobile    */
+.tl-notif-dropdown {
+  width: 340px;
+}
+
+.tl-notif-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 16px;
+  border-bottom: 1px solid var(--teacher-border);
+  background: var(--teacher-bg);
+  gap: 8px;
+}
+
+.tl-notif-header-title {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--teacher-text);
+  flex: 1;
+  min-width: 0;
+}
+
+.tl-notif-header-badge {
+  background: var(--teacher-primary);
+  color: #fff;
+  font-size: 10.5px;
+  font-weight: 700;
+  padding: 2px 8px;
+  border-radius: 20px;
+  flex-shrink: 0;
+}
+
+.tl-notif-mark-all {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  background: none;
+  border: none;
+  font-size: 11.5px;
+  font-weight: 600;
+  color: var(--teacher-primary);
+  cursor: pointer;
+  padding: 4px 8px;
+  border-radius: 6px;
+  transition: background 0.15s;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+.tl-notif-mark-all:hover { background: var(--teacher-accent); }
+
+.tl-notif-list {
+  max-height: 300px;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  scrollbar-width: thin;
+  scrollbar-color: var(--teacher-border) transparent;
+}
+.tl-notif-list::-webkit-scrollbar       { width: 3px; }
+.tl-notif-list::-webkit-scrollbar-track { background: transparent; }
+.tl-notif-list::-webkit-scrollbar-thumb { background: var(--teacher-border); border-radius: 3px; }
+
+.tl-notif-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 28px 20px;
+  gap: 8px;
+  text-align: center;
+}
+
+.tl-notif-empty-icon {
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+  background: var(--teacher-bg);
+  color: var(--teacher-subtext);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 4px;
+}
+
+.tl-notif-empty p    { font-size: 13.5px; font-weight: 700; color: var(--teacher-text); margin: 0; }
+.tl-notif-empty span { font-size: 12px;   color: var(--teacher-subtext); margin: 0; }
+
+.tl-notif-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 10px 14px;
+  background: none;
+  border: none;
+  border-bottom: 1px solid #F8FAFC;
+  cursor: pointer;
+  text-align: left;
+  transition: background 0.14s;
+  width: 100%;
+  min-height: 44px;
+  position: relative;
+}
+.tl-notif-item:last-child   { border-bottom: none; }
+.tl-notif-item:hover        { background: var(--teacher-bg); }
+.tl-notif-item-unread       { background: rgba(55, 138, 221, 0.05); }
+.tl-notif-item-unread:hover { background: var(--teacher-accent); }
+
+.tl-notif-item-icon {
+  width: 30px;
+  height: 30px;
+  min-width: 30px;
+  border-radius: 8px;
+  background: var(--teacher-accent);
+  color: var(--teacher-sidebar);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+
+.tl-notif-item-body { flex: 1; min-width: 0; }
+
+.tl-notif-item-title {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--teacher-text);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  margin: 0 0 2px;
+}
+
+.tl-notif-item-msg {
+  font-size: 12px;
+  color: var(--teacher-subtext);
+  line-height: 1.45;
+  margin: 0;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.tl-notif-item-time {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 10.5px;
+  color: var(--teacher-subtext);
+  margin-top: 4px;
+  opacity: 0.75;
+}
+
+.tl-notif-item-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--teacher-primary);
+  flex-shrink: 0;
+  margin-top: 6px;
+}
+
+.tl-notif-footer {
+  display: block;
+  width: 100%;
+  padding: 11px 16px;
+  text-align: center;
+  background: var(--teacher-bg);
+  border: none;
+  border-top: 1px solid var(--teacher-border);
+  font-size: 12.5px;
+  font-weight: 700;
+  color: var(--teacher-primary);
+  cursor: pointer;
+  transition: background 0.15s;
+  min-height: 44px;
+}
+.tl-notif-footer:hover { background: var(--teacher-accent); }
+
+/* ── Profile dropdown ────────────────────────── */
+/* FIX #6: Wider, better spaced                  */
+.tl-profile-dropdown {
+  width: 300px;
+  padding-bottom: 6px;
+}
+
+.tl-profile-dropdown-header {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 16px 14px 14px;
+  background: linear-gradient(135deg, var(--teacher-sidebar), var(--teacher-primary));
+  border-radius: 12px 12px 0 0;
+}
+
+.tl-profile-dropdown-info {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  overflow: hidden;
+}
+
+.tl-profile-dropdown-name {
+  font-size: 14px;
+  font-weight: 700;
+  color: #fff;
+  margin: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.tl-profile-dropdown-subject {
+  font-size: 11.5px;
+  color: rgba(255, 255, 255, 0.72);
+  margin: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.tl-profile-dropdown-code {
+  font-size: 10px;
+  font-weight: 700;
+  color: var(--teacher-accent);
+  font-family: 'Courier New', monospace;
+  letter-spacing: 0.5px;
+  margin: 0;
+}
+
+.tl-profile-dropdown-email {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 11px;
+  color: rgba(255, 255, 255, 0.60);
+  margin: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.tl-profile-dropdown-email svg { flex-shrink: 0; opacity: 0.70; }
+
+/* ── Profile completion widget ───────────────── */
+/* FIX #6: Better spacing, no overflow           */
+.tl-profile-completion {
+  margin: 10px 10px 0;
+  padding: 10px 12px;
+  background: var(--teacher-bg);
+  border: 1px solid var(--teacher-border);
+  border-radius: 10px;
+}
+
+.tl-profile-completion-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 7px;
+  gap: 6px;
+}
+
+.tl-profile-completion-label {
+  font-size: 11.5px;
+  font-weight: 700;
+  color: var(--teacher-text);
+}
+
+.tl-profile-completion-pct {
+  font-size: 12px;
+  font-weight: 800;
+  color: var(--teacher-primary);
+  flex-shrink: 0;
+}
+
+.tl-profile-progress-track {
+  height: 5px;
+  background: var(--teacher-border);
+  border-radius: 3px;
+  overflow: hidden;
+  margin-bottom: 9px;
+}
+
+.tl-profile-progress-bar {
+  height: 100%;
+  background: linear-gradient(90deg, var(--teacher-primary), #5BA3E8);
+  border-radius: 3px;
+  transition: width 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.tl-profile-checklist {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+}
+
+.tl-profile-check-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 10.5px;
+  font-weight: 600;
+  color: var(--teacher-subtext);
+  background: #F1F5F9;
+  border: 1px solid var(--teacher-border);
+  border-radius: 20px;
+  padding: 3px 8px;
+  line-height: 1;
+  flex-shrink: 0;
+}
+.tl-profile-check-item svg { color: #94A3B8; flex-shrink: 0; }
+
+.tl-profile-check-done {
+  color: #0F6E56;
+  background: #EAF4F0;
+  border-color: #A7D7C5;
+}
+.tl-profile-check-done svg { color: #1D9E75; }
+
+/* ══════════════════════════════════════════════════
+   PAGE CONTENT
+   FIX #9: Bottom padding on mobile to clear bottom nav
+══════════════════════════════════════════════════ */
+.tl-content {
+  flex: 1;
+  padding: 24px 28px;
+  outline: none;
+  min-height: 0;
+}
+
+@media (max-width: 768px) {
+  /* Extra bottom padding so content is not hidden by bottom nav */
+  .tl-content { padding: 16px 14px calc(var(--bottom-nav-height) + 16px); }
+}
+
+@media (max-width: 480px) {
+  .tl-content { padding: 12px 12px calc(var(--bottom-nav-height) + 12px); }
+}
+
+/* ══════════════════════════════════════════════════
+   BOTTOM NAV (mobile)
+   FIX #2: Role-based — rendered from BOTTOM_NAV
+            which is set in JSX based on profile.
+   FIX #9: Touch targets, safe-area support.
+══════════════════════════════════════════════════ */
+.tl-bottom-nav {
+  display: none;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 150;
+  background: #fff;
+  border-top: 1.5px solid var(--teacher-border);
+  height: var(--bottom-nav-height);
+  /* iOS safe area */
+  padding-bottom: env(safe-area-inset-bottom, 0px);
+  box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.07);
+}
+
+@media (max-width: 768px) {
+  .tl-bottom-nav { display: flex; align-items: stretch; }
+}
+
+.tl-bottom-item {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 3px;
+  background: none;
+  border: none;
+  color: #9CA3AF;
+  font-size: 10px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: color 0.18s;
+  /* FIX #9: Minimum tap target */
+  min-height: 44px;
+  padding: 6px 4px;
+}
+
+.tl-bottom-icon-wrap {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.tl-bottom-item:hover  { color: var(--teacher-primary); }
+.tl-bottom-active      { color: var(--teacher-primary) !important; }
+
+/* Active icon glow */
+.tl-bottom-active .tl-bottom-icon-wrap svg {
+  filter: drop-shadow(0 0 4px rgba(55, 138, 221, 0.40));
+}
+
+.tl-bottom-item > span:last-child {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 100%;
+}
+
+/* ══════════════════════════════════════════════════
+   LOGOUT CONFIRM MODAL
+══════════════════════════════════════════════════ */
+.tl-logout-confirm {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  text-align: center;
+  padding: 6px 0 4px;
+}
+
+.tl-logout-confirm-icon {
+  width: 60px;
+  height: 60px;
+  border-radius: 16px;
+  background: #FFFBEB;
+  border: 1.5px solid #FDE68A;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.tl-logout-confirm-title {
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--teacher-text);
+  margin: 0;
+}
+
+.tl-logout-confirm-sub {
+  font-size: 13.5px;
+  color: var(--teacher-subtext);
+  line-height: 1.6;
+  max-width: 280px;
+  margin: 0;
+}
+
+.tl-logout-confirm-actions {
+  display: flex;
+  gap: 10px;
+  width: 100%;
+  margin-top: 8px;
+}
+
+.tl-logout-cancel {
+  flex: 1;
+  height: 44px;
+  background: #F3F4F6;
+  border: 1.5px solid var(--teacher-border);
+  border-radius: 10px;
+  color: var(--teacher-body);
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+.tl-logout-cancel:hover { background: #E5E7EB; }
+
+.tl-logout-confirm-btn {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  height: 44px;
+  background: #E53E3E;
+  border: none;
+  border-radius: 10px;
+  color: #fff;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  box-shadow: 0 4px 12px rgba(229, 62, 62, 0.26);
+  transition: background 0.2s, transform 0.15s;
+}
+.tl-logout-confirm-btn:hover {
+  background: #C53030;
+  transform: translateY(-1px);
+}
+
+/* ══════════════════════════════════════════════════
+   RESPONSIVE — Topbar / Dropdowns
+   FIX #9: All breakpoints, no overflow
+══════════════════════════════════════════════════ */
+@media (max-width: 768px) {
+  .tl-topbar { padding: 0 14px; gap: 8px; }
+
+  /* Hide the text label from Create button to save space */
+  .tl-quick-act-label   { display: none; }
+  .tl-quick-act-chevron { display: none; }
+  .tl-quick-act-btn {
+    width: 36px;
+    height: 36px;
+    padding: 0;
+    justify-content: center;
+    border-radius: 9px;
+  }
+}
+
+/* On small phones: dropdowns become full-width bottom-anchored overlays */
+@media (max-width: 480px) {
+  .tl-topbar       { padding: 0 10px; gap: 6px; }
+  .tl-page-title   { font-size: 14px; }
+  .tl-topbar-right { gap: 4px; }
+  .tl-icon-btn     { width: 34px; height: 34px; min-width: 34px; }
+  .tl-profile-btn  { padding: 2px; }
+
+  /* Full-width dropdown sheets on very small screens */
+  .tl-notif-dropdown,
+  .tl-profile-dropdown,
+  .tl-quick-act-dropdown {
+    position: fixed;
+    top: var(--topbar-height);
+    left: 8px;
+    right: 8px;
+    width: auto;
+    max-width: none;
+    border-radius: 14px;
+  }
+
+  .tl-notif-dropdown  { max-height: 70vh; overflow-y: auto; }
+  .tl-profile-dropdown { max-height: 70vh; overflow-y: auto; }
+}
+
+/* 320px — minimum supported width */
+@media (max-width: 360px) {
+  .tl-topbar            { padding: 0 8px; }
+  .tl-breadcrumb-item,
+  .tl-breadcrumb-current { max-width: 70px; }
+  .tl-bottom-item       { font-size: 9px; }
+  .tl-bottom-item > span:last-child { font-size: 9px; }
+}

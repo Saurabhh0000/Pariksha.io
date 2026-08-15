@@ -1,0 +1,1207 @@
+/* ═══════════════════════════════════════════════════
+   TeacherMarks.css  — Marks Entry Page
+   Pariksha.io — Teacher Blue Theme
+   Prefix: tm-*
+═══════════════════════════════════════════════════ */
+
+/* ── Page shell ── */
+.tm-page {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  max-width: 1100px;
+  margin: 0 auto;
+}
+
+/* ── Full-page loading ── */
+.tm-loading-full {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 60vh;
+  gap: 14px;
+  color: var(--teacher-subtext);
+  font-size: 14px;
+}
+
+/* ── Empty page state ── */
+.tm-empty-page {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 50vh;
+  gap: 10px;
+  text-align: center;
+  padding: 40px 20px;
+}
+.tm-empty-page__icon {
+  width: 72px;
+  height: 72px;
+  border-radius: 20px;
+  background: var(--teacher-bg);
+  border: 1.5px solid var(--teacher-border);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--teacher-border);
+  margin-bottom: 6px;
+}
+.tm-empty-page p    { font-size: 17px; font-weight: 700; color: var(--teacher-text); margin: 0; }
+.tm-empty-page span { font-size: 13.5px; color: var(--teacher-subtext); max-width: 320px; }
+
+/* ── Spin animation ── */
+@keyframes tm-spin {
+  to { transform: rotate(360deg); }
+}
+.tm-spin { animation: tm-spin 0.8s linear infinite; }
+
+/* ═══════════════════════════════════════════════════
+   HEADING ROW
+═══════════════════════════════════════════════════ */
+
+.tm-heading-row {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 14px;
+  flex-wrap: wrap;
+}
+
+.tm-heading {
+  font-size: 20px;
+  font-weight: 800;
+  color: var(--teacher-text);
+  margin: 0 0 3px;
+  letter-spacing: -0.3px;
+}
+
+.tm-sub {
+  font-size: 13px;
+  color: var(--teacher-subtext);
+  margin: 0;
+}
+
+.tm-heading-actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-shrink: 0;
+}
+
+.tm-refresh-btn {
+  width: 38px;
+  height: 38px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--teacher-card);
+  border: 1.5px solid var(--teacher-border);
+  border-radius: 10px;
+  color: var(--teacher-subtext);
+  cursor: pointer;
+  transition: background 0.18s, border-color 0.18s, color 0.18s;
+}
+.tm-refresh-btn:hover:not(:disabled) {
+  background: var(--teacher-accent);
+  border-color: var(--teacher-primary);
+  color: var(--teacher-primary);
+}
+.tm-refresh-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+
+.tm-save-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  height: 38px;
+  padding: 0 18px;
+  background: var(--teacher-primary);
+  color: #fff;
+  border: none;
+  border-radius: 10px;
+  font-size: 13.5px;
+  font-weight: 700;
+  cursor: pointer;
+  font-family: inherit;
+  box-shadow: 0 3px 10px rgba(24,95,165,0.26);
+  transition: background 0.18s, transform 0.14s, box-shadow 0.18s;
+  white-space: nowrap;
+}
+.tm-save-btn:hover:not(:disabled) {
+  background: var(--teacher-sidebar);
+  transform: translateY(-1px);
+  box-shadow: 0 5px 16px rgba(24,95,165,0.34);
+}
+.tm-save-btn:disabled { opacity: 0.65; cursor: not-allowed; transform: none; }
+
+/* ═══════════════════════════════════════════════════
+   STATS CARDS  — beautiful, icon-led, coloured
+═══════════════════════════════════════════════════ */
+
+.tm-stats-row {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 14px;
+}
+
+.tm-stat-card {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 16px 18px;
+  border-radius: 16px;
+  border: 1.5px solid transparent;
+  background: var(--teacher-card);
+  box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+  transition: transform 0.22s cubic-bezier(0.22,1,0.36,1),
+              box-shadow 0.22s;
+  cursor: default;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Subtle diagonal gloss strip */
+.tm-stat-card::after {
+  content: "";
+  position: absolute;
+  top: -30%;
+  right: -20%;
+  width: 60%;
+  height: 160%;
+  border-radius: 50%;
+  opacity: 0.06;
+  pointer-events: none;
+}
+
+.tm-stat-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 24px rgba(0,0,0,0.10);
+}
+
+/* Colour variants */
+.tm-stat-card--blue   { border-color: #BFDBFE; background: linear-gradient(135deg, #EFF6FF 0%, #fff 100%); }
+.tm-stat-card--amber  { border-color: #FDE68A; background: linear-gradient(135deg, #FFFBEB 0%, #fff 100%); }
+.tm-stat-card--green  { border-color: #BBF7D0; background: linear-gradient(135deg, #F0FDF4 0%, #fff 100%); }
+.tm-stat-card--purple { border-color: #DDD6FE; background: linear-gradient(135deg, #F5F3FF 0%, #fff 100%); }
+
+.tm-stat-card--blue::after   { background: #1D4ED8; }
+.tm-stat-card--amber::after  { background: #D97706; }
+.tm-stat-card--green::after  { background: #15803D; }
+.tm-stat-card--purple::after { background: #6D28D9; }
+
+/* Icon circle */
+.tm-stat-card__icon {
+  width: 46px;
+  height: 46px;
+  min-width: 46px;
+  border-radius: 13px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  transition: transform 0.22s;
+}
+.tm-stat-card:hover .tm-stat-card__icon { transform: scale(1.08) rotate(-4deg); }
+
+.tm-stat-card--blue   .tm-stat-card__icon { background: #DBEAFE; color: #1D4ED8; }
+.tm-stat-card--amber  .tm-stat-card__icon { background: #FEF3C7; color: #D97706; }
+.tm-stat-card--green  .tm-stat-card__icon { background: #DCFCE7; color: #15803D; }
+.tm-stat-card--purple .tm-stat-card__icon { background: #EDE9FE; color: #6D28D9; }
+
+/* Card text */
+.tm-stat-card__body {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+  min-width: 0;
+  flex: 1;
+}
+
+.tm-stat-card__value {
+  font-size: 22px;
+  font-weight: 800;
+  color: var(--teacher-text);
+  letter-spacing: -0.04em;
+  line-height: 1.1;
+}
+
+.tm-stat-card--blue   .tm-stat-card__value { color: #1D4ED8; }
+.tm-stat-card--amber  .tm-stat-card__value { color: #B45309; }
+.tm-stat-card--green  .tm-stat-card__value { color: #15803D; }
+.tm-stat-card--purple .tm-stat-card__value { color: #6D28D9; }
+
+.tm-stat-card__label {
+  font-size: 12.5px;
+  font-weight: 700;
+  color: var(--teacher-text);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.tm-stat-card__sub {
+  font-size: 11px;
+  color: var(--teacher-subtext);
+  font-weight: 500;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* ═══════════════════════════════════════════════════
+   FILTERS CARD
+═══════════════════════════════════════════════════ */
+
+.tm-filters-card {
+  background: var(--teacher-card);
+  border: 1.5px solid var(--teacher-border);
+  border-radius: 16px;
+  padding: 18px 20px;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.04);
+}
+
+.tm-filters-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 14px;
+}
+
+.tm-filter-group {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.tm-filter-label {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 11.5px;
+  font-weight: 700;
+  color: var(--teacher-subtext);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+.tm-filter-label svg { color: var(--teacher-primary); }
+
+.tm-opt {
+  font-weight: 500;
+  text-transform: none;
+  letter-spacing: 0;
+  font-size: 10.5px;
+  color: #9CA3AF;
+}
+
+/* Select wrapper */
+.tm-select-wrap {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.tm-select {
+  width: 100%;
+  height: 42px;
+  padding: 0 34px 0 12px;
+  border: 1.5px solid var(--teacher-border);
+  border-radius: 10px;
+  background: var(--teacher-bg);
+  font-size: 13.5px;
+  color: var(--teacher-body);
+  appearance: none;
+  outline: none;
+  cursor: pointer;
+  font-family: inherit;
+  transition: border-color 0.18s, box-shadow 0.18s;
+}
+.tm-select:focus {
+  border-color: var(--teacher-primary);
+  box-shadow: 0 0 0 3px rgba(24,95,165,0.10);
+  background: #fff;
+}
+
+.tm-select-chevron {
+  position: absolute;
+  right: 10px;
+  color: #9CA3AF;
+  pointer-events: none;
+  transform: rotate(90deg);
+}
+
+/* Text/number inputs */
+.tm-input {
+  width: 100%;
+  height: 42px;
+  padding: 0 12px;
+  border: 1.5px solid var(--teacher-border);
+  border-radius: 10px;
+  background: var(--teacher-bg);
+  font-size: 13.5px;
+  color: var(--teacher-body);
+  outline: none;
+  font-family: inherit;
+  box-sizing: border-box;
+  transition: border-color 0.18s, box-shadow 0.18s;
+}
+.tm-input:focus {
+  border-color: var(--teacher-primary);
+  box-shadow: 0 0 0 3px rgba(24,95,165,0.10);
+  background: #fff;
+}
+.tm-input::placeholder { color: #C4C4C4; }
+
+/* ── Filters card inline notices ──
+   (JSX used className="tm-filters-warn" but no rule for it existed —
+   that's why it rendered as plain unstyled, misaligned text.) */
+.tm-filters-warn {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  margin-top: 12px;
+  padding: 10px 14px;
+  border-radius: 10px;
+  background: #FFFBEB;
+  border: 1px solid #FDE68A;
+  color: #92400E;
+  font-size: 12.5px;
+  font-weight: 500;
+  line-height: 1.5;
+}
+.tm-filters-warn svg {
+  color: #D97706;
+  flex-shrink: 0;
+  margin-top: 1px;
+}
+.tm-filters-warn span { min-width: 0; }
+
+/* Red "you're about to overwrite existing marks" variant */
+.tm-filters-warn--danger {
+  background: #FEF2F2;
+  border-color: #FECACA;
+  color: #991B1B;
+}
+.tm-filters-warn--danger svg {
+  color: #DC2626;
+}
+
+/* ═══════════════════════════════════════════════════
+   STUDENT MARKS HISTORY MODAL CONTENT
+   (rendered inside the shared <Modal> component's body)
+═══════════════════════════════════════════════════ */
+
+.tm-history-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 32px 16px;
+  text-align: center;
+  color: var(--teacher-subtext);
+}
+.tm-history-empty svg { color: var(--teacher-border); }
+.tm-history-empty p {
+  font-size: 13.5px;
+  font-weight: 600;
+  margin: 0;
+}
+
+.tm-history-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.tm-history-item {
+  border: 1.5px solid var(--teacher-border);
+  border-radius: 12px;
+  padding: 12px 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  background: var(--teacher-bg);
+  transition: border-color 0.15s, background 0.15s;
+}
+.tm-history-item:hover {
+  border-color: var(--teacher-primary);
+  background: #fff;
+}
+
+.tm-history-item__top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.tm-history-subject {
+  font-size: 13.5px;
+  font-weight: 700;
+  color: var(--teacher-text);
+}
+
+.tm-history-examtype {
+  font-size: 11px;
+  font-weight: 700;
+  background: #EFF6FF;
+  color: #1D4ED8;
+  border: 1px solid #BFDBFE;
+  border-radius: 20px;
+  padding: 2px 9px;
+  white-space: nowrap;
+}
+
+.tm-history-item__mid {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.tm-history-score {
+  font-size: 15px;
+  font-weight: 800;
+  color: var(--teacher-text);
+}
+.tm-history-pct {
+  font-size: 12.5px;
+  font-weight: 600;
+  color: var(--teacher-subtext);
+}
+
+.tm-history-item__bottom {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  padding-top: 8px;
+  border-top: 1px dashed var(--teacher-border);
+}
+
+.tm-history-date {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--teacher-subtext);
+}
+
+.tm-history-edit-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  background: var(--teacher-primary);
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  padding: 6px 12px;
+  font-size: 12px;
+  font-weight: 700;
+  cursor: pointer;
+  font-family: inherit;
+  transition: background 0.15s, transform 0.12s;
+}
+.tm-history-edit-btn:hover {
+  background: var(--teacher-sidebar);
+  transform: translateY(-1px);
+}
+
+/* ═══════════════════════════════════════════════════
+   TABLE CARD
+═══════════════════════════════════════════════════ */
+
+.tm-table-card {
+  background: var(--teacher-card);
+  border: 1.5px solid var(--teacher-border);
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.04);
+}
+
+/* Toolbar */
+.tm-table-toolbar {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 14px 18px;
+  border-bottom: 1px solid var(--teacher-border);
+  flex-wrap: wrap;
+}
+
+.tm-search-wrap {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex: 1;
+  min-width: 180px;
+  height: 38px;
+  background: var(--teacher-bg);
+  border: 1.5px solid var(--teacher-border);
+  border-radius: 10px;
+  padding: 0 10px;
+  transition: border-color 0.18s, box-shadow 0.18s;
+}
+.tm-search-wrap:focus-within {
+  border-color: var(--teacher-primary);
+  box-shadow: 0 0 0 3px rgba(24,95,165,0.10);
+}
+.tm-search-icon { color: #9CA3AF; flex-shrink: 0; }
+.tm-search {
+  flex: 1;
+  border: none;
+  background: transparent;
+  font-size: 13px;
+  color: var(--teacher-body);
+  outline: none;
+  font-family: inherit;
+}
+.tm-search::placeholder { color: #C4C4C4; }
+.tm-search-clear {
+  background: none;
+  border: none;
+  color: #9CA3AF;
+  cursor: pointer;
+  display: flex;
+  padding: 2px;
+  border-radius: 4px;
+  transition: color 0.15s;
+}
+.tm-search-clear:hover { color: #EF4444; }
+
+.tm-progress-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  background: #F0FDF4;
+  border: 1px solid #BBF7D0;
+  border-radius: 20px;
+  padding: 5px 12px;
+  font-size: 12px;
+  font-weight: 700;
+  color: #15803D;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+/* ═══════════════════════════════════════════════════
+   Class + exam context strip
+   (renders "<GraduationCap> Class 8 · Section D  [badges…]")
+   FIX: JSX uses tm-context-* class names, but this stylesheet
+   previously only defined tm-class-badge-* — so the strip had
+   zero layout/spacing/color. Renamed to match the JSX.
+═══════════════════════════════════════════════════ */
+
+.tm-context-strip {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 18px;
+  border-bottom: 1px solid var(--teacher-border);
+  background: var(--teacher-bg);
+  flex-wrap: wrap;
+}
+
+.tm-context-icon {
+  color: var(--teacher-primary);
+  flex-shrink: 0;
+}
+
+.tm-context-class {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--teacher-text);
+  margin-right: 2px;
+  white-space: nowrap;
+}
+
+.tm-context-badge {
+  display: inline-flex;
+  align-items: center;
+  font-size: 11px;
+  font-weight: 700;
+  border-radius: 20px;
+  padding: 2px 9px;
+  border: 1px solid transparent;
+  white-space: nowrap;
+}
+
+.tm-context-badge--blue {
+  background: #EFF6FF;
+  color: #1D4ED8;
+  border-color: #BFDBFE;
+}
+.tm-context-badge--green {
+  background: #F0FDF4;
+  color: #15803D;
+  border-color: #BBF7D0;
+}
+.tm-context-badge--purple {
+  background: #F5F3FF;
+  color: #6D28D9;
+  border-color: #DDD6FE;
+}
+.tm-context-badge--amber {
+  background: #FFFBEB;
+  color: #B45309;
+  border-color: #FDE68A;
+}
+
+/* Inline loading / empty */
+.tm-loading-inline {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 48px 20px;
+  gap: 12px;
+  color: var(--teacher-subtext);
+  font-size: 13.5px;
+}
+.tm-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 48px 20px;
+  gap: 10px;
+  text-align: center;
+}
+.tm-empty__icon {
+  width: 60px;
+  height: 60px;
+  border-radius: 16px;
+  background: var(--teacher-bg);
+  border: 1.5px solid var(--teacher-border);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--teacher-border);
+  margin-bottom: 4px;
+}
+.tm-empty p    { font-size: 15px; font-weight: 700; color: var(--teacher-text); margin: 0; }
+.tm-clear-search {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--teacher-primary);
+  background: none;
+  border: none;
+  cursor: pointer;
+  text-decoration: underline;
+  padding: 0;
+}
+
+/* ═══════════════════════════════════════════════════
+   DESKTOP TABLE
+═══════════════════════════════════════════════════ */
+
+.tm-table-wrap {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+.tm-table {
+  width: 100%;
+  border-collapse: collapse;
+  min-width: 640px;
+}
+
+.tm-th {
+  padding: 11px 14px;
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--teacher-subtext);
+  text-align: left;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  background: var(--teacher-bg);
+  border-bottom: 1.5px solid var(--teacher-border);
+  white-space: nowrap;
+}
+.tm-th--no, .tm-th--total, .tm-th--grade { text-align: center; }
+.tm-th--marks, .tm-th--pct               { text-align: center; }
+
+/* Column width hints */
+.tm-th--no    { width: 42px;  }
+.tm-th--name  { min-width: 180px; }
+.tm-th--roll  { width: 90px;  }
+.tm-th--marks { width: 120px; }
+.tm-th--total { width: 70px;  }
+.tm-th--pct   { width: 130px; }
+.tm-th--grade { width: 70px;  }
+
+.tm-row {
+  border-bottom: 1px solid #F1F5F9;
+  transition: background 0.14s;
+}
+.tm-row:last-child { border-bottom: none; }
+.tm-row:hover      { background: var(--teacher-bg); }
+
+.tm-td {
+  padding: 13px 14px;
+  vertical-align: middle;
+  font-size: 13.5px;
+  color: var(--teacher-body);
+}
+.tm-td--no, .tm-td--total, .tm-td--grade { text-align: center; }
+.tm-td--marks, .tm-td--pct               { text-align: center; }
+
+/* Student cell */
+/* Student cell — now rendered as a <button> so clicking opens the
+   marks-history modal. Reset default button chrome and add a subtle
+   hover state so it still reads as clickable text, not a button. */
+.tm-student-cell {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.tm-student-cell--btn {
+  background: none;
+  border: none;
+  padding: 0;
+  margin: 0;
+  width: 100%;
+  text-align: left;
+  cursor: pointer;
+  font-family: inherit;
+}
+.tm-student-cell--btn:hover .tm-student-name {
+  color: var(--teacher-primary);
+}
+.tm-student-cell--btn:hover .tm-view-icon {
+  opacity: 1;
+}
+.tm-view-icon {
+  color: var(--teacher-primary);
+  opacity: 0;
+  transition: opacity 0.15s;
+  flex-shrink: 0;
+}
+.tm-avatar {
+  width: 34px;
+  height: 34px;
+  min-width: 34px;
+  border-radius: 9px;
+  background: var(--teacher-accent);
+  color: var(--teacher-sidebar);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 13px;
+  font-weight: 700;
+  flex-shrink: 0;
+}
+.tm-avatar--lg { width: 38px; height: 38px; border-radius: 10px; font-size: 14px; }
+
+.tm-student-info { display: flex; flex-direction: column; gap: 1px; min-width: 0; }
+.tm-student-name {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 13.5px;
+  font-weight: 700;
+  color: var(--teacher-text);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  transition: color 0.15s;
+}
+.tm-student-meta {
+  font-size: 11px;
+  color: var(--teacher-subtext);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Roll number pill */
+.tm-roll-pill {
+  display: inline-block;
+  background: var(--teacher-bg);
+  border: 1px solid var(--teacher-border);
+  border-radius: 6px;
+  padding: 2px 8px;
+  font-size: 11.5px;
+  font-weight: 700;
+  color: var(--teacher-subtext);
+  font-family: 'Courier New', monospace;
+  white-space: nowrap;
+}
+
+/* Mark input */
+.tm-mark-input {
+  width: 80px;
+  height: 36px;
+  padding: 0 10px;
+  border: 1.5px solid var(--teacher-border);
+  border-radius: 8px;
+  background: #fff;
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--teacher-text);
+  text-align: center;
+  outline: none;
+  font-family: inherit;
+  transition: border-color 0.15s, box-shadow 0.15s;
+  box-sizing: border-box;
+}
+.tm-mark-input:focus {
+  border-color: var(--teacher-primary);
+  box-shadow: 0 0 0 3px rgba(24,95,165,0.12);
+}
+.tm-mark-input::-webkit-outer-spin-button,
+.tm-mark-input::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
+.tm-mark-input { -moz-appearance: textfield; }
+
+/* Mobile version of the mark input — wider */
+.tm-mark-input--mobile {
+  width: 100%;
+  flex: 1;
+  text-align: left;
+  padding: 0 12px;
+}
+
+.tm-total-text {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--teacher-subtext);
+}
+.tm-na { color: #CBD5E1; }
+
+/* Percentage bar */
+.tm-pct-wrap {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+}
+.tm-pct-text {
+  font-size: 12.5px;
+  font-weight: 700;
+  color: var(--teacher-text);
+}
+.tm-pct-bar-track {
+  width: 70px;
+  height: 5px;
+  background: #E2E8F0;
+  border-radius: 99px;
+  overflow: hidden;
+}
+.tm-pct-bar-fill {
+  height: 100%;
+  border-radius: 99px;
+  transition: width 0.35s ease;
+}
+
+/* Grade badge */
+.tm-grade {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 26px;
+  border-radius: 7px;
+  font-size: 11.5px;
+  font-weight: 800;
+  letter-spacing: 0.01em;
+}
+.tm-grade--a-plus { background: #DCFCE7; color: #15803D; }
+.tm-grade--a      { background: #D1FAE5; color: #065F46; }
+.tm-grade--b      { background: #DBEAFE; color: #1D4ED8; }
+.tm-grade--c      { background: #FEF3C7; color: #92400E; }
+.tm-grade--d      { background: #FEE2E2; color: #991B1B; }
+.tm-grade--na     { background: #F1F5F9; color: #94A3B8; }
+
+/* Hide desktop table on mobile */
+@media (max-width: 768px) {
+  .tm-table-wrap { display: none; }
+}
+
+/* ═══════════════════════════════════════════════════
+   MOBILE CARDS  — shown only on mobile
+═══════════════════════════════════════════════════ */
+
+.tm-mobile-cards {
+  display: none;
+  flex-direction: column;
+  gap: 0;
+}
+
+@media (max-width: 768px) {
+  .tm-mobile-cards { display: flex; }
+}
+
+.tm-mobile-card {
+  padding: 14px 16px;
+  border-bottom: 1px solid #F1F5F9;
+  transition: background 0.14s;
+}
+.tm-mobile-card:last-child { border-bottom: none; }
+.tm-mobile-card:hover      { background: var(--teacher-bg); }
+
+.tm-mobile-card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 12px;
+}
+
+.tm-mobile-card-left {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-width: 0;
+  flex: 1;
+}
+.tm-mobile-card-left--btn {
+  background: none;
+  border: none;
+  padding: 0;
+  margin: 0;
+  text-align: left;
+  cursor: pointer;
+  font-family: inherit;
+}
+.tm-mobile-card-left--btn:active .tm-student-name {
+  color: var(--teacher-primary);
+}
+.tm-mobile-card-left--btn .tm-view-icon {
+  opacity: 0.55; /* always faintly visible on mobile — no hover state to rely on */
+}
+
+.tm-mobile-card-body {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding-left: 48px; /* aligns under avatar */
+}
+
+.tm-mobile-mark-row {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.tm-mobile-mark-label {
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--teacher-subtext);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.tm-mobile-mark-input-wrap {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.tm-mobile-out-of {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--teacher-subtext);
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.tm-mobile-pct-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.tm-mobile-pct-label {
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--teacher-subtext);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  flex-shrink: 0;
+}
+
+.tm-mobile-pct-right {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 4px;
+  flex: 1;
+}
+
+.tm-mobile-pct-right .tm-pct-bar-track {
+  width: 100%;
+  max-width: 160px;
+}
+
+/* ═══════════════════════════════════════════════════
+   PAGINATION — matches reference screenshot:
+   "X–Y of Z" text on the left, simple rounded-square
+   ‹ [1] [2] [3] › controls on the right. No page-size
+   selector, no first/last jump buttons, no ellipsis.
+═══════════════════════════════════════════════════ */
+
+.tm-table-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 14px 18px;
+  border-top: 1px solid var(--teacher-border);
+  flex-wrap: wrap;
+}
+
+.tm-page-info {
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--teacher-subtext);
+  white-space: nowrap;
+}
+
+.tm-page-btns {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.tm-page-btn {
+  min-width: 40px;
+  height: 40px;
+  padding: 0 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #fff;
+  border: 1.5px solid var(--teacher-border);
+  border-radius: 10px;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--teacher-text);
+  cursor: pointer;
+  font-family: inherit;
+  transition: background 0.15s, border-color 0.15s, color 0.15s;
+}
+.tm-page-btn:hover:not(:disabled):not(.tm-page-btn--active) {
+  background: var(--teacher-accent);
+  border-color: var(--teacher-primary);
+}
+.tm-page-btn:disabled { opacity: 0.4; cursor: not-allowed; }
+
+.tm-page-btn--active {
+  background: var(--teacher-primary) !important;
+  border-color: var(--teacher-primary) !important;
+  color: #fff !important;
+}
+
+/* ═══════════════════════════════════════════════════
+   VALIDATION NOTICES
+═══════════════════════════════════════════════════ */
+
+.tm-notice {
+  display: flex;
+  align-items: flex-start;
+  gap: 9px;
+  padding: 11px 14px;
+  border-radius: 10px;
+  font-size: 13px;
+  font-weight: 500;
+  line-height: 1.5;
+}
+.tm-notice--warn {
+  background: #FFFBEB;
+  border: 1px solid #FDE68A;
+  color: #92400E;
+}
+.tm-notice--warn svg { color: #D97706; flex-shrink: 0; margin-top: 1px; }
+
+/* ═══════════════════════════════════════════════════
+   RESPONSIVE — 1024px
+═══════════════════════════════════════════════════ */
+
+@media (max-width: 1024px) {
+  .tm-stats-row     { grid-template-columns: repeat(2, 1fr); }
+  .tm-filters-grid  { grid-template-columns: repeat(2, 1fr); }
+}
+
+/* ═══════════════════════════════════════════════════
+   RESPONSIVE — 768px (tablet)
+═══════════════════════════════════════════════════ */
+
+@media (max-width: 768px) {
+  .tm-page          { gap: 14px; }
+  .tm-stats-row     { grid-template-columns: repeat(2, 1fr); gap: 10px; }
+  .tm-filters-grid  { grid-template-columns: 1fr 1fr; gap: 12px; }
+
+  .tm-heading-row {
+    align-items: flex-start;
+    gap: 12px;
+  }
+
+  .tm-table-footer {
+    padding: 12px 14px;
+    gap: 10px;
+  }
+}
+
+/* ═══════════════════════════════════════════════════
+   RESPONSIVE — 480px (mobile)
+═══════════════════════════════════════════════════ */
+
+@media (max-width: 480px) {
+  .tm-stats-row     { grid-template-columns: 1fr 1fr; gap: 10px; }
+  .tm-filters-grid  { grid-template-columns: 1fr; }
+
+  /* Stat card — compact on very small */
+  .tm-stat-card     { padding: 12px 14px; gap: 10px; }
+  .tm-stat-card__icon {
+    width: 38px;
+    height: 38px;
+    min-width: 38px;
+    border-radius: 10px;
+  }
+  .tm-stat-card__value  { font-size: 18px; }
+  .tm-stat-card__label  { font-size: 11.5px; }
+  .tm-stat-card__sub    { font-size: 10px; }
+
+  /* Heading */
+  .tm-heading       { font-size: 18px; }
+  .tm-heading-actions { gap: 8px; }
+  .tm-save-btn      { padding: 0 14px; font-size: 13px; height: 36px; }
+  .tm-refresh-btn   { width: 36px; height: 36px; }
+
+  /* Filters */
+  .tm-filters-card  { padding: 14px 14px; }
+
+  /* Table card */
+  .tm-table-toolbar { padding: 12px 14px; }
+  .tm-context-strip { padding: 8px 14px; }
+  .tm-mobile-card   { padding: 12px 14px; }
+
+  /* Mobile card body indent less on tiny screens */
+  .tm-mobile-card-body { padding-left: 0; }
+
+  /* Footer */
+  .tm-table-footer  { padding: 10px 14px; flex-direction: column; align-items: center; gap: 10px; }
+
+  /* Pagination buttons — smaller */
+  .tm-page-btn      { min-width: 34px; height: 34px; font-size: 13px; }
+
+  /* Notices */
+  .tm-notice        { font-size: 12.5px; padding: 10px 12px; }
+}
+
+/* ═══════════════════════════════════════════════════
+   RESPONSIVE — 375px and below
+═══════════════════════════════════════════════════ */
+
+@media (max-width: 375px) {
+  .tm-stats-row { grid-template-columns: 1fr 1fr; gap: 8px; }
+  .tm-stat-card { padding: 10px 12px; gap: 8px; }
+  .tm-stat-card__icon { width: 34px; height: 34px; min-width: 34px; border-radius: 9px; }
+  .tm-stat-card__value { font-size: 16px; }
+
+  .tm-page-btns    { gap: 6px; }
+  .tm-page-btn     { min-width: 30px; height: 30px; font-size: 12px; }
+}

@@ -1,0 +1,1060 @@
+/* ═══════════════════════════════════════════
+   Admin Layout — Purple Theme
+   Pariksha.io
+═══════════════════════════════════════════ */
+
+.al-root {
+  display: flex;
+  min-height: 100vh;
+  background: var(--admin-bg);
+  position: relative;
+}
+
+/* ═══════════════════════════════════════════
+   SIDEBAR
+═══════════════════════════════════════════ */
+
+.al-sidebar {
+  width: var(--sidebar-width);
+  min-height: 100vh;
+  background: var(--admin-sidebar);
+  display: flex;
+  flex-direction: column;
+  position: fixed;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  z-index: 200;
+  transition:
+    width 0.25s cubic-bezier(0.4, 0, 0.2, 1),
+    transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  overflow-x: visible;   /* allow the expand-toggle handle to straddle the edge */
+  overflow-y: hidden;
+}
+
+/* Collapsed — desktop only (JSX ensures al-collapsed is never set on mobile) */
+.al-collapsed .al-sidebar {
+  width: 72px;
+}
+
+/* Mobile drawer */
+@media (max-width: 768px) {
+  .al-sidebar {
+    width: var(--sidebar-width) !important;
+    transform: translateX(-100%);
+    box-shadow: none;
+  }
+  .al-sidebar.al-sidebar-open {
+    transform: translateX(0);
+    box-shadow: 4px 0 32px rgba(0, 0, 0, 0.18);
+  }
+}
+
+/* ── Brand row ── */
+.al-brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 0 14px 0 18px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.10);
+  height: var(--topbar-height); /* baseline brand height */
+  min-height: var(--topbar-height);
+  flex-shrink: 0;
+}
+
+.al-collapsed .al-brand {
+  justify-content: center;
+  padding: 0 8px;
+}
+
+.al-brand-logo {
+  width: 36px;
+  height: 36px;
+  min-width: 36px;
+  background: rgba(255, 255, 255, 0.15);
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  flex-shrink: 0;
+}
+
+.al-brand-text {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+  flex: 1;
+  overflow: hidden;
+  min-width: 0;
+}
+
+.al-brand-name {
+  font-size: 15px;
+  font-weight: 800;
+  color: #fff;
+  letter-spacing: -0.3px;
+  white-space: nowrap;
+  line-height: 1.2;
+}
+
+.al-brand-role {
+  font-size: 10px;
+  color: rgba(255, 255, 255, 0.50);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+/* ── Collapse toggle (expanded state) ── */
+.al-collapse-toggle {
+  width: 28px;
+  height: 28px;
+  min-width: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(255, 255, 255, 0.10);
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  border-radius: 7px;
+  color: rgba(255, 255, 255, 0.75);
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s;
+  margin-left: auto;
+  flex-shrink: 0;
+}
+
+.al-collapse-toggle:hover {
+  background: rgba(255, 255, 255, 0.20);
+  color: #fff;
+}
+
+/* ── Expand toggle (collapsed state) ──
+   A small "handle" that straddles the sidebar's right
+   edge — half inside the sidebar, half on the content
+   area — like a docked panel resize handle. */
+.al-expand-toggle {
+  width: 22px;
+  height: 22px;
+  position: absolute;
+  top: var(--topbar-height);
+  right: 0.5px;                 /* straddles the sidebar border */
+  transform: translateY(-50%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #fff;
+  border: 1.5px solid var(--admin-border);
+  border-radius: 10px;
+  color: var(--admin-primary);
+  cursor: pointer;
+  z-index: 5;
+  box-shadow: 0 2px 6px rgba(15, 23, 42, 0.10);
+  transition: background 0.2s, color 0.2s, border-color 0.2s, box-shadow 0.2s;
+}
+
+.al-expand-toggle:hover {
+  background: var(--admin-accent);
+  border-color: var(--admin-primary);
+  box-shadow: 0 4px 10px rgba(15, 23, 42, 0.14);
+}
+
+/* ── Nav ── */
+.al-nav {
+  flex: 1;
+  padding: 12px 10px;
+  overflow-y: auto;
+  overflow-x: hidden;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.al-nav::-webkit-scrollbar { width: 3px; }
+.al-nav::-webkit-scrollbar-track { background: transparent; }
+.al-nav::-webkit-scrollbar-thumb { background: rgba(255, 255, 255, 0.15); border-radius: 3px; }
+
+.al-nav-group {
+  margin-bottom: 12px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.al-nav-group:last-child {
+  margin-bottom: 0;
+  padding-bottom: 0;
+  border-bottom: none;
+}
+
+.al-nav-group-label {
+  font-size: 10px;
+  font-weight: 700;
+  color: rgba(255, 255, 255, 0.38);
+  text-transform: uppercase;
+  letter-spacing: 0.7px;
+  padding: 4px 10px 6px;
+  white-space: nowrap;
+}
+
+.al-nav-item {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 11px;
+  margin-bottom: 2px;
+  border: none;
+  border-radius: 10px;
+  background: none;
+  color: rgba(255, 255, 255, 0.65);
+  cursor: pointer;
+  font-size: 13.5px;
+  font-weight: 500;
+  text-align: left;
+  transition: background 0.18s, color 0.18s, transform 0.15s;
+  white-space: nowrap;
+  position: relative;
+}
+
+.al-nav-item:last-child { margin-bottom: 0; }
+
+.al-nav-item:hover {
+  background: rgba(255, 255, 255, 0.10);
+  color: #fff;
+  transform: translateX(2px);
+}
+
+.al-collapsed .al-nav-item {
+  justify-content: center;
+  padding: 12px;
+}
+
+.al-collapsed .al-nav-item:hover {
+  transform: none;
+}
+
+.al-nav-active {
+  background: rgba(255, 255, 255, 0.15) !important;
+  color: #fff !important;
+  font-weight: 600;
+}
+
+.al-nav-active::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 6px;
+  bottom: 6px;
+  width: 3px;
+  background: var(--admin-accent);
+  border-radius: 0 3px 3px 0;
+}
+
+.al-collapsed .al-nav-active::before { display: none; }
+
+.al-nav-icon { flex-shrink: 0; min-width: 19px; }
+
+.al-nav-label {
+  flex: 1;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.al-nav-badge {
+  background: #FCA5A5;
+  color: #7F1D1D;
+  font-size: 10.5px;
+  font-weight: 800;
+  padding: 2px 8px;
+  border-radius: 20px;
+  letter-spacing: 0.3px;
+  min-width: 20px;
+  text-align: center;
+  flex-shrink: 0;
+}
+
+.al-nav-badge-dot {
+  position: absolute;
+  top: 7px;
+  right: 7px;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #FCA5A5;
+  border: 1.5px solid var(--admin-sidebar);
+}
+
+.al-nav-chevron {
+  color: rgba(255, 255, 255, 0.50);
+  flex-shrink: 0;
+}
+
+/* ── Sidebar Footer ── */
+.al-sidebar-footer {
+  padding: 12px 10px;
+  border-top: 1px solid rgba(255, 255, 255, 0.10);
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  flex-shrink: 0;
+}
+
+.al-collapsed .al-sidebar-footer {
+  align-items: center;
+}
+
+.al-user {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 6px;
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.al-user-avatar {
+  width: 34px;
+  height: 34px;
+  min-width: 34px;
+  border-radius: 9px;
+  background: rgba(255, 255, 255, 0.18);
+  border: 1.5px solid rgba(255, 255, 255, 0.22);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  font-weight: 700;
+  color: #fff;
+}
+
+.al-user-info {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+  overflow: hidden;
+  min-width: 0;
+}
+
+.al-user-name {
+  font-size: 13px;
+  font-weight: 700;
+  color: #fff;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.al-user-email {
+  font-size: 11px;
+  color: rgba(255, 255, 255, 0.45);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.al-logout-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 9px;
+  width: 100%;
+  padding: 9px 10px;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 10px;
+  color: rgba(255, 255, 255, 0.65);
+  font-size: 13.5px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s, border-color 0.2s;
+}
+
+.al-collapsed .al-logout-btn {
+  width: 40px;
+  height: 40px;
+  padding: 0;
+}
+
+.al-logout-btn:hover {
+  background: rgba(229, 62, 62, 0.18);
+  color: #FCA5A5;
+  border-color: rgba(229, 62, 62, 0.25);
+}
+
+/* ═══════════════════════════════════════════
+   MAIN AREA
+═══════════════════════════════════════════ */
+
+.al-main {
+  flex: 1;
+  margin-left: var(--sidebar-width);
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  transition: margin-left 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  min-width: 0;
+}
+
+.al-collapsed .al-main {
+  margin-left: 72px;
+}
+
+@media (max-width: 768px) {
+  .al-main { margin-left: 0 !important; }
+}
+
+/* ── Mobile overlay ── */
+.al-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.45);
+  z-index: 199;
+  animation: overlayIn 0.2s ease;
+}
+
+@keyframes overlayIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+/* ═══════════════════════════════════════════
+   TOPBAR
+   Key fix: title sits in its own row, breadcrumb
+   trail sits directly below it in a second row.
+   The topbar height now AUTO-GROWS to fit both
+   rows (min-height keeps a sensible floor).
+═══════════════════════════════════════════ */
+
+.al-topbar {
+  min-height: var(--topbar-height);   /* floor height — grows if content needs more */
+  background: #fff;
+  border-bottom: 1px solid var(--admin-border);
+  display: flex;
+  align-items: center;                 /* vertically centres left/right blocks */
+  justify-content: space-between;
+  padding: 10px 24px;                  /* vertical padding replaces fixed height */
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  gap: 16px;
+  box-shadow: 0 1px 0 var(--admin-border);
+}
+
+/* LEFT side — hamburger + title+breadcrumb stack */
+.al-topbar-left {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-width: 0;
+  flex: 1;
+}
+
+/* Title + breadcrumb wrapper — stacked column, title on top */
+.al-title-wrap {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  gap: 3px;                 /* small gap between title and breadcrumb */
+  min-width: 0;
+  overflow: hidden;
+}
+
+/* ── Page title — Row 1 ── */
+.al-page-title {
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--admin-text);
+  line-height: 1.4;            /* a touch looser so bold glyphs aren't clipped */
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 100%;
+  margin: 0;
+  padding-right: 2px;          /* prevents the last character (e.g. "s") from clipping */
+}
+
+/* ── Breadcrumb — Row 2, sits directly below title ── */
+.al-breadcrumb {
+  display: flex;
+  align-items: center;
+  gap: 0;
+  flex-wrap: nowrap;
+  overflow: hidden;
+  max-width: 100%;
+  line-height: 1.2;
+}
+
+.al-breadcrumb-home {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: none;
+  border: none;
+  padding: 1px 2px;
+  color: var(--admin-subtext);
+  cursor: pointer;
+  border-radius: 4px;
+  transition: color 0.18s;
+  flex-shrink: 0;
+}
+
+.al-breadcrumb-home:hover { color: var(--admin-primary); }
+
+.al-breadcrumb-segment {
+  display: inline-flex;
+  align-items: center;
+  gap: 0;
+  min-width: 0;
+  overflow: hidden;
+}
+
+.al-breadcrumb-sep {
+  color: #CBD5E1;
+  flex-shrink: 0;
+  margin: 0 2px;
+}
+
+.al-breadcrumb-item {
+  background: none;
+  border: none;
+  padding: 0 2px;
+  font-size: 11.5px;
+  font-weight: 500;
+  color: var(--admin-subtext);
+  cursor: pointer;
+  border-radius: 4px;
+  transition: color 0.18s;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 120px;
+}
+
+.al-breadcrumb-item:hover { color: var(--admin-primary); }
+
+.al-breadcrumb-current {
+  font-size: 11.5px;
+  font-weight: 600;
+  color: var(--admin-primary);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 140px;
+}
+
+/* ── Right side — notification bell + profile avatar ── */
+.al-topbar-right {
+  display: flex;
+  align-items: center;   /* vertically centres bell and avatar within topbar */
+  gap: 10px;
+  flex-shrink: 0;
+}
+
+/* Hamburger — mobile only */
+.al-hamburger {
+  display: none;
+  background: none;
+  border: none;
+  color: var(--admin-body);
+  cursor: pointer;
+  padding: 6px;
+  border-radius: 8px;
+  transition: background 0.2s;
+  flex-shrink: 0;
+  align-self: center;
+}
+
+.al-hamburger:hover { background: var(--admin-bg); }
+
+@media (max-width: 768px) {
+  .al-hamburger { display: flex; align-items: center; justify-content: center; }
+}
+
+/* ── Notification icon button ── */
+.al-icon-btn {
+  width: 38px;
+  height: 38px;
+  background: var(--admin-bg);
+  border: 1.5px solid var(--admin-border);
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--admin-body);
+  cursor: pointer;
+  position: relative;
+  transition: background 0.2s, border-color 0.2s;
+  flex-shrink: 0;
+}
+
+.al-icon-btn:hover {
+  background: var(--admin-accent);
+  border-color: var(--admin-primary);
+  color: var(--admin-text);
+}
+
+.al-notif-dot {
+  position: absolute;
+  top: -5px;
+  right: -5px;
+  min-width: 18px;
+  height: 18px;
+  padding: 0 4px;
+  border-radius: 20px;
+  background: #E53E3E;
+  color: #fff;
+  font-size: 10px;
+  font-weight: 800;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 2px solid #fff;
+  line-height: 1;
+}
+
+/* ── Profile button ── */
+.al-profile-btn {
+  display: flex;
+  align-items: center;
+  background: var(--admin-bg);
+  border: 1.5px solid var(--admin-border);
+  border-radius: 10px;
+  padding: 3px;
+  cursor: pointer;
+  transition: background 0.2s, border-color 0.2s;
+  flex-shrink: 0;
+}
+
+.al-profile-btn:hover {
+  background: var(--admin-accent);
+  border-color: var(--admin-primary);
+}
+
+.al-profile-avatar {
+  width: 30px;
+  height: 30px;
+  border-radius: 7px;
+  background: var(--admin-primary);
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 11.5px;
+  font-weight: 700;
+  flex-shrink: 0;
+}
+
+.al-profile-avatar-lg {
+  width: 42px;
+  height: 42px;
+  border-radius: 11px;
+  font-size: 15px;
+}
+
+/* ═══════════════════════════════════════════
+   DROPDOWNS
+═══════════════════════════════════════════ */
+
+.al-dropdown-wrap {
+  position: relative;
+}
+
+.al-dropdown {
+  position: absolute;
+  top: calc(100% + 10px);
+  right: 0;
+  background: #fff;
+  border: 1.5px solid var(--admin-border);
+  border-radius: 14px;
+  box-shadow: 0 12px 36px rgba(0, 0, 0, 0.14);
+  z-index: 300;
+  animation: dropdownIn 0.18s cubic-bezier(0.22, 1, 0.36, 1) both;
+  overflow: hidden;
+}
+
+@keyframes dropdownIn {
+  from { opacity: 0; transform: translateY(-8px) scale(0.97); }
+  to   { opacity: 1; transform: translateY(0)    scale(1);    }
+}
+
+.al-notif-dropdown {
+  width: 320px;
+  max-width: calc(100vw - 32px);
+}
+
+.al-dropdown-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 13px 16px;
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--admin-text);
+  border-bottom: 1px solid var(--admin-border);
+  background: var(--admin-bg);
+}
+
+.al-dropdown-header-badge {
+  background: var(--admin-primary);
+  color: #fff;
+  font-size: 11px;
+  font-weight: 700;
+  padding: 2px 9px;
+  border-radius: 20px;
+}
+
+.al-notif-list {
+  max-height: 300px;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+}
+
+.al-notif-loading {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 28px 0;
+}
+
+.al-notif-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  padding: 30px 20px;
+  text-align: center;
+}
+
+.al-notif-empty p    { font-size: 13.5px; font-weight: 700; color: var(--admin-text); }
+.al-notif-empty span { font-size: 12px; color: var(--admin-subtext); }
+
+.al-notif-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 11px;
+  padding: 12px 16px;
+  background: none;
+  border: none;
+  border-bottom: 1px solid #F8FAFC;
+  cursor: pointer;
+  text-align: left;
+  transition: background 0.15s;
+  width: 100%;
+}
+
+.al-notif-item:last-child { border-bottom: none; }
+.al-notif-item:hover      { background: var(--admin-bg); }
+
+.al-notif-icon {
+  width: 32px;
+  height: 32px;
+  min-width: 32px;
+  border-radius: 9px;
+  background: #FFFBEB;
+  color: #D69E2E;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.al-notif-body { min-width: 0; }
+
+.al-notif-title {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--admin-text);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.al-notif-sub {
+  font-size: 11.5px;
+  color: var(--admin-subtext);
+  margin-top: 2px;
+}
+
+.al-dropdown-footer {
+  display: block;
+  width: 100%;
+  padding: 12px 16px;
+  text-align: center;
+  background: var(--admin-bg);
+  border: none;
+  border-top: 1px solid var(--admin-border);
+  font-size: 12.5px;
+  font-weight: 700;
+  color: var(--admin-primary);
+  cursor: pointer;
+  transition: background 0.15s;
+}
+
+.al-dropdown-footer:hover { background: var(--admin-accent); }
+
+.al-profile-dropdown {
+  width: 260px;
+  max-width: calc(100vw - 32px);
+  padding: 6px;
+}
+
+.al-profile-dropdown-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 10px;
+}
+
+.al-profile-dropdown-info {
+  min-width: 0;
+  flex: 1;
+}
+
+.al-profile-dropdown-role  { font-size: 14px; font-weight: 700; color: var(--admin-text); margin-bottom: 3px; }
+
+.al-profile-dropdown-email {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 11.5px;
+  color: var(--admin-subtext);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.al-profile-dropdown-email svg { flex-shrink: 0; }
+
+.al-dropdown-divider {
+  height: 1px;
+  background: var(--admin-border);
+  margin: 4px 6px;
+}
+
+.al-dropdown-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  padding: 10px 10px;
+  background: none;
+  border: none;
+  border-radius: 8px;
+  font-size: 13.5px;
+  font-weight: 500;
+  color: var(--admin-body);
+  cursor: pointer;
+  transition: background 0.15s, color 0.15s;
+  text-align: left;
+}
+
+.al-dropdown-item:hover       { background: var(--admin-bg); color: var(--admin-text); }
+.al-dropdown-item-danger      { color: #E53E3E; }
+.al-dropdown-item-danger:hover { background: #FFF5F5; color: #C53030; }
+
+/* ═══════════════════════════════════════════
+   LOGOUT CONFIRM MODAL BODY
+═══════════════════════════════════════════ */
+
+.al-logout-confirm {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  text-align: center;
+  padding: 6px 0 4px;
+}
+
+.al-logout-confirm-icon {
+  width: 64px;
+  height: 64px;
+  border-radius: 18px;
+  background: #FFFBEB;
+  border: 1.5px solid #FDE68A;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 4px;
+}
+
+.al-logout-confirm-title {
+  font-size: 17px;
+  font-weight: 700;
+  color: var(--admin-text);
+}
+
+.al-logout-confirm-sub {
+  font-size: 14px;
+  color: var(--admin-subtext);
+  line-height: 1.6;
+  max-width: 280px;
+}
+
+.al-logout-confirm-actions {
+  display: flex;
+  gap: 10px;
+  width: 100%;
+  margin-top: 8px;
+}
+
+.al-logout-cancel {
+  flex: 1;
+  height: 42px;
+  background: #F3F4F6;
+  border: 1.5px solid var(--admin-border);
+  border-radius: 10px;
+  color: var(--admin-body);
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.al-logout-cancel:hover { background: #E5E7EB; }
+
+.al-logout-confirm-btn {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  height: 42px;
+  background: #E53E3E;
+  border: none;
+  border-radius: 10px;
+  color: #fff;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  box-shadow: 0 4px 12px rgba(229, 62, 62, 0.28);
+  transition: background 0.2s, transform 0.15s;
+}
+
+.al-logout-confirm-btn:hover {
+  background: #C53030;
+  transform: translateY(-1px);
+}
+
+/* ═══════════════════════════════════════════
+   PAGE CONTENT
+═══════════════════════════════════════════ */
+
+.al-content {
+  flex: 1;
+  padding: 24px 28px;
+}
+
+@media (max-width: 768px) {
+  .al-content { padding: 16px 14px 90px; }
+}
+
+/* ═══════════════════════════════════════════
+   BOTTOM NAV (mobile only)
+═══════════════════════════════════════════ */
+
+.al-bottom-nav {
+  display: none;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 150;
+  background: #fff;
+  border-top: 1.5px solid var(--admin-border);
+  height: 64px;
+  box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.06);
+}
+
+@media (max-width: 768px) {
+  .al-bottom-nav { display: flex; align-items: stretch; }
+}
+
+.al-bottom-item {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  background: none;
+  border: none;
+  color: #9CA3AF;
+  font-size: 10.5px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: color 0.18s;
+  padding: 6px 2px;
+  min-width: 0;
+}
+
+.al-bottom-item span:last-child {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 100%;
+}
+
+.al-bottom-icon-wrap {
+  position: relative;
+  display: flex;
+}
+
+.al-bottom-badge {
+  position: absolute;
+  top: -4px;
+  right: -8px;
+  min-width: 16px;
+  height: 16px;
+  padding: 0 3px;
+  border-radius: 20px;
+  background: #E53E3E;
+  color: #fff;
+  font-size: 9px;
+  font-weight: 800;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1.5px solid #fff;
+  line-height: 1;
+}
+
+.al-bottom-item:hover   { color: var(--admin-primary); }
+.al-bottom-active       { color: var(--admin-primary) !important; }
+.al-bottom-active svg   { filter: drop-shadow(0 0 4px rgba(127, 119, 221, 0.4)); }
+
+/* ═══════════════════════════════════════════
+   RESPONSIVE OVERRIDES
+═══════════════════════════════════════════ */
+
+@media (max-width: 768px) {
+  .al-topbar { padding: 8px 16px; }
+}
+
+@media (max-width: 480px) {
+  .al-topbar          { padding: 8px 12px; gap: 10px; }
+  .al-page-title      { font-size: 15px; }
+  .al-breadcrumb-item,
+  .al-breadcrumb-current { font-size: 11px; }
+  .al-topbar-right    { gap: 8px; }
+  .al-icon-btn        { width: 36px; height: 36px; }
+  .al-profile-btn     { padding: 2px; }
+  .al-profile-avatar  { width: 28px; height: 28px; font-size: 10.5px; }
+
+  /* Stack dropdowns as full-width sheets on very small screens */
+  .al-notif-dropdown,
+  .al-profile-dropdown {
+    position: fixed;
+    top: var(--topbar-height);
+    right: 8px;
+    left: 8px;
+    width: auto;
+    max-width: none;
+  }
+}
+
+@media (max-width: 360px) {
+  .al-bottom-item     { font-size: 9.5px; }
+  .al-breadcrumb-item,
+  .al-breadcrumb-current { max-width: 80px; }
+}

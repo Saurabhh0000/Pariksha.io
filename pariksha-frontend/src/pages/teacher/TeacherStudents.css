@@ -1,0 +1,1269 @@
+/* ═══════════════════════════════════════════════════
+   TeacherStudents.css — Pariksha.io
+   Uses global --teacher-* vars from teacher.css
+   Class prefix: ts-*
+═══════════════════════════════════════════════════ */
+
+/* ── Page shell ───────────────────────────────────── */
+.ts-page {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  padding-bottom: 40px;
+}
+
+.ts-loading,
+.ts-loading-inline {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.ts-loading        { min-height: 60vh; }
+.ts-loading-inline { min-height: 200px; }
+
+.ts-spin { animation: tsSpin 0.7s linear infinite; }
+@keyframes tsSpin {
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(360deg); }
+}
+
+/* ════════════════════════════════════════════════════
+   HEADING ROW
+════════════════════════════════════════════════════ */
+.ts-heading-row {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.ts-heading {
+  font-size: 22px;
+  font-weight: 800;
+  color: var(--teacher-text);
+  margin: 0 0 4px;
+  letter-spacing: -0.03em;
+}
+
+.ts-sub {
+  font-size: 13px;
+  color: var(--teacher-subtext);
+  font-weight: 500;
+  margin: 0;
+}
+
+.ts-heading-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-shrink: 0;
+}
+
+.ts-refresh-btn {
+  width: 42px;
+  height: 42px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--teacher-card);
+  border: 1.5px solid var(--teacher-border);
+  border-radius: 10px;
+  color: var(--teacher-text);
+  cursor: pointer;
+  transition: background 0.15s, border-color 0.15s;
+  flex-shrink: 0;
+}
+.ts-refresh-btn:hover:not(:disabled) {
+  background: var(--teacher-accent);
+  border-color: var(--teacher-primary);
+}
+.ts-refresh-btn:disabled { opacity: 0.6; cursor: not-allowed; }
+
+.ts-add-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  height: 42px;
+  padding: 0 20px;
+  background: var(--teacher-primary);
+  border: none;
+  border-radius: 10px;
+  color: #fff;
+  font-size: 14px;
+  font-weight: 700;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: background 0.15s, transform 0.12s;
+}
+.ts-add-btn:hover {
+  background: var(--teacher-sidebar);
+  transform: translateY(-1px);
+}
+
+/* ════════════════════════════════════════════════════
+   CLASS TABS
+════════════════════════════════════════════════════ */
+.ts-class-tabs {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.ts-class-tab {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 14px;
+  height: 40px;
+  border-radius: 10px;
+  border: 1.5px solid var(--teacher-border);
+  background: var(--teacher-card);
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--teacher-subtext);
+  cursor: pointer;
+  transition: background 0.15s, border-color 0.15s, color 0.15s;
+  white-space: nowrap;
+}
+.ts-class-tab:hover {
+  background: var(--teacher-accent);
+  border-color: var(--teacher-primary);
+  color: var(--teacher-primary);
+}
+.ts-class-tab--active {
+  background: var(--teacher-primary) !important;
+  border-color: var(--teacher-primary) !important;
+  color: #fff !important;
+}
+
+/* Role chip inside tab */
+.ts-tab-role-chip {
+  font-size: 10px;
+  font-weight: 700;
+  padding: 1px 7px;
+  border-radius: 5px;
+  letter-spacing: 0.03em;
+}
+
+.ts-tab-role-chip--mentor  { background: rgba(34,197,94,0.18);  color: #15803d; }
+.ts-tab-role-chip--subject { background: rgba(251,191,36,0.22); color: #92400e; }
+
+/* Active tab — invert chip colours for readability */
+.ts-class-tab--active .ts-tab-role-chip--mentor  { background: rgba(255,255,255,0.22); color: #fff; }
+.ts-class-tab--active .ts-tab-role-chip--subject { background: rgba(255,255,255,0.22); color: #fff; }
+
+/* ════════════════════════════════════════════════════
+   ROLE ACCESS BANNER
+════════════════════════════════════════════════════ */
+.ts-role-banner {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  border-radius: 14px;
+  padding: 16px 20px;
+  flex-wrap: wrap;
+  border: 1.5px solid;
+}
+
+.ts-role-banner--mentor  { background: #f0fdf4; border-color: #bbf7d0; }
+.ts-role-banner--subject { background: #fffbeb; border-color: #fde68a; }
+
+.ts-role-banner__icon {
+  width: 42px;
+  height: 42px;
+  min-width: 42px;
+  border-radius: 11px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.ts-role-banner--mentor  .ts-role-banner__icon { background: #dcfce7; color: #15803d; }
+.ts-role-banner--subject .ts-role-banner__icon { background: #fef3c7; color: #d97706; }
+
+.ts-role-banner__text {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  min-width: 0;
+}
+
+.ts-role-banner__title {
+  font-size: 13.5px;
+  font-weight: 700;
+}
+
+.ts-role-banner--mentor  .ts-role-banner__title { color: #166534; }
+.ts-role-banner--subject .ts-role-banner__title { color: #92400e; }
+
+.ts-role-banner__desc {
+  font-size: 12.5px;
+  font-weight: 500;
+  line-height: 1.55;
+}
+
+.ts-role-banner--mentor  .ts-role-banner__desc { color: #15803d; }
+.ts-role-banner--subject .ts-role-banner__desc { color: #b45309; }
+
+.ts-role-banner__btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  height: 40px;
+  padding: 0 16px;
+  background: #dcfce7;
+  border: 1.5px solid #86efac;
+  border-radius: 9px;
+  font-size: 13px;
+  font-weight: 700;
+  color: #166534;
+  cursor: pointer;
+  flex-shrink: 0;
+  transition: background 0.15s, border-color 0.15s;
+  white-space: nowrap;
+}
+.ts-role-banner__btn:hover {
+  background: #bbf7d0;
+  border-color: #4ade80;
+}
+
+/* ════════════════════════════════════════════════════
+   KPI STATS CARDS
+   Redesigned to match TeacherMarks.css's .tm-stat-card
+   language: gradient tint background, colored border,
+   diagonal gloss corner, icon rotate-on-hover, and a
+   color-matched value. Same 4 color slots as before
+   (blue / green / amber / red), same class names as
+   the JSX — no JSX changes needed.
+════════════════════════════════════════════════════ */
+.ts-kpi-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 14px;
+}
+
+.ts-kpi-card {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 16px 18px;
+  border-radius: 16px;
+  border: 1.5px solid transparent;
+  background: var(--teacher-card);
+  box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+  transition: transform 0.22s cubic-bezier(0.22,1,0.36,1),
+              box-shadow 0.22s;
+  cursor: default;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Subtle diagonal gloss strip */
+.ts-kpi-card::after {
+  content: "";
+  position: absolute;
+  top: -30%;
+  right: -20%;
+  width: 60%;
+  height: 160%;
+  border-radius: 50%;
+  opacity: 0.06;
+  pointer-events: none;
+}
+
+.ts-kpi-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 24px rgba(0,0,0,0.10);
+}
+
+/* Colour variants */
+.ts-kpi-card--blue  { border-color: #BFDBFE; background: linear-gradient(135deg, #EFF6FF 0%, #fff 100%); }
+.ts-kpi-card--green { border-color: #BBF7D0; background: linear-gradient(135deg, #F0FDF4 0%, #fff 100%); }
+.ts-kpi-card--amber { border-color: #FDE68A; background: linear-gradient(135deg, #FFFBEB 0%, #fff 100%); }
+.ts-kpi-card--red    { border-color: #FECACA; background: linear-gradient(135deg, #FEF2F2 0%, #fff 100%); }
+
+.ts-kpi-card--blue::after  { background: #1D4ED8; }
+.ts-kpi-card--green::after { background: #15803D; }
+.ts-kpi-card--amber::after { background: #D97706; }
+.ts-kpi-card--red::after   { background: #DC2626; }
+
+/* Icon circle */
+.ts-kpi-icon {
+  width: 46px;
+  height: 46px;
+  min-width: 46px;
+  border-radius: 13px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  transition: transform 0.22s;
+}
+.ts-kpi-card:hover .ts-kpi-icon { transform: scale(1.08) rotate(-4deg); }
+
+/* Colour variants — icon */
+.ts-kpi-card--blue  .ts-kpi-icon { background: #DBEAFE; color: #1D4ED8; }
+.ts-kpi-card--green .ts-kpi-icon { background: #DCFCE7; color: #15803D; }
+.ts-kpi-card--amber .ts-kpi-icon { background: #FEF3C7; color: #D97706; }
+.ts-kpi-card--red   .ts-kpi-icon { background: #FEE2E2; color: #DC2626; }
+
+/* Card text */
+.ts-kpi-body {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+  min-width: 0;
+  flex: 1;
+}
+
+.ts-kpi-value {
+  font-size: 22px;
+  font-weight: 800;
+  color: var(--teacher-text);
+  letter-spacing: -0.04em;
+  line-height: 1.1;
+}
+
+.ts-kpi-card--blue  .ts-kpi-value { color: #1D4ED8; }
+.ts-kpi-card--green .ts-kpi-value { color: #15803D; }
+.ts-kpi-card--amber .ts-kpi-value { color: #B45309; }
+.ts-kpi-card--red   .ts-kpi-value { color: #DC2626; }
+
+.ts-kpi-label {
+  font-size: 12.5px;
+  font-weight: 700;
+  color: var(--teacher-text);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.ts-kpi-sub {
+  font-size: 11px;
+  color: var(--teacher-subtext);
+  font-weight: 500;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* ════════════════════════════════════════════════════
+   TOOLBAR
+════════════════════════════════════════════════════ */
+.ts-toolbar {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.ts-search-wrap {
+  position: relative;
+  flex: 1;
+  min-width: 220px;
+}
+
+.ts-search-icon {
+  position: absolute;
+  left: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--teacher-subtext);
+  pointer-events: none;
+}
+
+.ts-search {
+  width: 100%;
+  height: 44px;
+  padding: 0 36px;
+  border: 1.5px solid var(--teacher-border);
+  border-radius: 10px;
+  font-size: 13.5px;
+  color: var(--teacher-body);
+  background: var(--teacher-card);
+  outline: none;
+  box-sizing: border-box;
+  transition: border-color 0.15s, box-shadow 0.15s;
+}
+.ts-search:focus {
+  border-color: var(--teacher-primary);
+  box-shadow: 0 0 0 3px rgba(55,138,221,0.10);
+}
+.ts-search::placeholder { color: #B0BAC4; }
+
+.ts-search-clear {
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  color: var(--teacher-subtext);
+  cursor: pointer;
+  padding: 4px;
+  display: flex;
+  align-items: center;
+  transition: color 0.15s;
+}
+.ts-search-clear:hover { color: #EF4444; }
+
+.ts-filter-group {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  flex-shrink: 0;
+  flex-wrap: wrap;
+}
+
+.ts-filter-btn {
+  height: 40px;
+  padding: 0 14px;
+  border-radius: 9px;
+  border: 1.5px solid var(--teacher-border);
+  background: var(--teacher-card);
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--teacher-subtext);
+  cursor: pointer;
+  white-space: nowrap;
+  transition: background 0.15s, border-color 0.15s, color 0.15s;
+}
+.ts-filter-btn:hover {
+  background: var(--teacher-accent);
+  border-color: var(--teacher-primary);
+  color: var(--teacher-primary);
+}
+.ts-filter-btn--active {
+  background: var(--teacher-primary) !important;
+  border-color: var(--teacher-primary) !important;
+  color: #fff !important;
+}
+
+.ts-sort-wrap { position: relative; flex-shrink: 0; }
+
+.ts-sort-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  height: 40px;
+  padding: 0 14px;
+  border: 1.5px solid var(--teacher-border);
+  border-radius: 9px;
+  background: var(--teacher-card);
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--teacher-subtext);
+  cursor: pointer;
+  white-space: nowrap;
+  transition: background 0.15s, border-color 0.15s, color 0.15s;
+}
+.ts-sort-btn:hover {
+  background: var(--teacher-accent);
+  border-color: var(--teacher-primary);
+  color: var(--teacher-primary);
+}
+
+.ts-sort-dropdown {
+  position: absolute;
+  top: calc(100% + 6px);
+  right: 0;
+  min-width: 168px;
+  background: var(--teacher-card);
+  border: 1.5px solid var(--teacher-border);
+  border-radius: 10px;
+  box-shadow: 0 8px 28px rgba(24,95,165,0.14);
+  z-index: 100;
+  overflow: hidden;
+  animation: tsDropIn 0.15s ease both;
+}
+@keyframes tsDropIn {
+  from { opacity: 0; transform: translateY(-5px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.ts-sort-option {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+  padding: 10px 14px;
+  background: none;
+  border: none;
+  border-bottom: 1px solid rgba(24,95,165,0.05);
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--teacher-body);
+  cursor: pointer;
+  text-align: left;
+  transition: background 0.12s, color 0.12s;
+}
+.ts-sort-option:last-child { border-bottom: none; }
+.ts-sort-option:hover      { background: var(--teacher-bg); color: var(--teacher-primary); }
+.ts-sort-option--active    { color: var(--teacher-primary); font-weight: 700; }
+
+/* ── Results info ─────────────────────────────────── */
+.ts-results-info {
+  font-size: 12.5px;
+  color: var(--teacher-subtext);
+  font-weight: 500;
+}
+
+/* ════════════════════════════════════════════════════
+   STATUS BADGES
+════════════════════════════════════════════════════ */
+.ts-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 11px;
+  font-weight: 700;
+  padding: 4px 9px;
+  border-radius: 20px;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.ts-badge--lg { font-size: 12.5px; padding: 5px 12px; }
+
+.ts-badge--active   { background: #DCFCE7; color: #15803D; }
+.ts-badge--pending  { background: #FEF3C7; color: #92400E; }
+.ts-badge--inactive { background: #FEE2E2; color: #991B1B; }
+
+/* ════════════════════════════════════════════════════
+   STUDENT CARD GRID
+════════════════════════════════════════════════════ */
+.ts-student-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 14px;
+}
+
+.ts-student-card {
+  background: var(--teacher-card);
+  border: 1.5px solid var(--teacher-border);
+  border-radius: 14px;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  box-shadow: var(--teacher-shadow);
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+.ts-student-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(24,95,165,0.12);
+}
+
+.ts-student-card__top {
+  display: flex;
+  align-items: flex-start;
+  gap: 11px;
+}
+
+.ts-student-avatar {
+  width: 46px;
+  height: 46px;
+  min-width: 46px;
+  border-radius: 12px;
+  background: var(--teacher-accent);
+  color: var(--teacher-sidebar);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 15px;
+  font-weight: 800;
+  overflow: hidden;
+  flex-shrink: 0;
+}
+
+.ts-avatar-img { width: 100%; height: 100%; object-fit: cover; }
+
+.ts-student-info {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  min-width: 0;
+}
+
+.ts-student-name {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--teacher-text);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.ts-student-roll {
+  font-size: 10.5px;
+  font-weight: 700;
+  color: var(--teacher-primary);
+  background: var(--teacher-accent);
+  padding: 2px 7px;
+  border-radius: 5px;
+  width: fit-content;
+  font-family: monospace;
+  letter-spacing: 0.04em;
+}
+
+.ts-student-email {
+  font-size: 11.5px;
+  color: var(--teacher-subtext);
+  font-weight: 500;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.ts-student-meta {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 10px;
+  padding-top: 10px;
+  border-top: 1px solid rgba(24,95,165,0.07);
+}
+
+.ts-student-meta span {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 12px;
+  color: var(--teacher-subtext);
+  font-weight: 500;
+}
+.ts-student-meta svg { color: var(--teacher-primary); flex-shrink: 0; }
+
+.ts-student-card__actions { display: flex; gap: 8px; }
+
+.ts-card-btn {
+  flex: 1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  height: 38px;
+  padding: 0 12px;
+  background: var(--teacher-bg);
+  border: 1.5px solid var(--teacher-border);
+  border-radius: 9px;
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--teacher-primary);
+  cursor: pointer;
+  transition: background 0.15s, border-color 0.15s;
+}
+.ts-card-btn:hover {
+  background: var(--teacher-accent);
+  border-color: var(--teacher-primary);
+}
+
+/* ════════════════════════════════════════════════════
+   EMPTY STATES
+════════════════════════════════════════════════════ */
+.ts-empty-page {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  padding: 72px 24px;
+  text-align: center;
+}
+
+.ts-empty-page__icon {
+  width: 72px;
+  height: 72px;
+  border-radius: 20px;
+  background: var(--teacher-bg);
+  color: var(--teacher-primary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0.45;
+  margin-bottom: 4px;
+}
+
+.ts-empty-page__title {
+  font-size: 17px;
+  font-weight: 800;
+  color: var(--teacher-text);
+  margin: 0;
+}
+
+.ts-empty-page__desc {
+  font-size: 13.5px;
+  color: var(--teacher-subtext);
+  max-width: 360px;
+  line-height: 1.6;
+  font-weight: 500;
+}
+
+.ts-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  padding: 56px 24px;
+  text-align: center;
+  background: var(--teacher-card);
+  border-radius: 16px;
+  border: 1.5px solid var(--teacher-border);
+}
+
+.ts-empty__icon {
+  width: 62px;
+  height: 62px;
+  border-radius: 17px;
+  background: var(--teacher-bg);
+  color: var(--teacher-primary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0.4;
+}
+
+.ts-empty p {
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--teacher-text);
+  margin: 0;
+}
+
+.ts-empty span {
+  font-size: 13px;
+  color: var(--teacher-subtext);
+  max-width: 320px;
+  line-height: 1.55;
+}
+
+.ts-empty__action {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 4px;
+  padding: 0 20px;
+  height: 42px;
+  background: var(--teacher-primary);
+  border: none;
+  border-radius: 10px;
+  color: #fff;
+  font-size: 14px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+.ts-empty__action:hover { background: var(--teacher-sidebar); }
+
+/* ════════════════════════════════════════════════════
+   PAGINATION (only when > PAGE_THRESH)
+════════════════════════════════════════════════════ */
+.ts-pagination {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 12px;
+  padding: 14px 18px;
+  background: var(--teacher-card);
+  border: 1.5px solid var(--teacher-border);
+  border-radius: 12px;
+  box-shadow: var(--teacher-shadow);
+}
+
+.ts-page-size {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  color: var(--teacher-subtext);
+  font-weight: 500;
+}
+
+.ts-page-size-select {
+  height: 34px;
+  padding: 0 10px;
+  border: 1.5px solid var(--teacher-border);
+  border-radius: 8px;
+  background: var(--teacher-bg);
+  font-size: 13px;
+  color: var(--teacher-body);
+  cursor: pointer;
+  outline: none;
+}
+
+.ts-page-controls {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.ts-page-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 34px;
+  height: 34px;
+  padding: 0 6px;
+  border-radius: 8px;
+  border: 1.5px solid var(--teacher-border);
+  background: var(--teacher-card);
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--teacher-text);
+  cursor: pointer;
+  transition: background 0.15s, border-color 0.15s, color 0.15s;
+}
+.ts-page-btn:hover:not(:disabled):not(.ts-page-btn--active) {
+  background: var(--teacher-accent);
+  border-color: var(--teacher-primary);
+  color: var(--teacher-primary);
+}
+.ts-page-btn:disabled { opacity: 0.4; cursor: not-allowed; }
+.ts-page-btn--active {
+  background: var(--teacher-primary) !important;
+  border-color: var(--teacher-primary) !important;
+  color: #fff !important;
+}
+
+.ts-page-ellipsis {
+  font-size: 13px;
+  color: var(--teacher-subtext);
+  padding: 0 4px;
+  user-select: none;
+}
+
+.ts-page-info {
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--teacher-subtext);
+  white-space: nowrap;
+}
+
+/* ════════════════════════════════════════════════════
+   ADD STUDENT MODAL FORM
+════════════════════════════════════════════════════ */
+.ts-add-form {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.ts-form-section {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 11.5px;
+  font-weight: 700;
+  color: var(--teacher-subtext);
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+  margin: 4px 0 0;
+  padding-bottom: 8px;
+  border-bottom: 1px solid var(--teacher-border);
+}
+.ts-form-section svg { color: var(--teacher-primary); }
+
+.ts-form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+.ts-form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.ts-form-label {
+  font-size: 12.5px;
+  font-weight: 600;
+  color: var(--teacher-subtext);
+}
+
+.ts-form-req { color: #EF4444; margin-left: 2px; }
+
+.ts-input {
+  width: 100%;
+  height: 44px;
+  padding: 0 12px;
+  border: 1.5px solid var(--teacher-border);
+  border-radius: 9px;
+  font-size: 14px;
+  color: var(--teacher-body);
+  background: #fff;
+  box-sizing: border-box;
+  outline: none;
+  font-family: inherit;
+  transition: border-color 0.15s, box-shadow 0.15s;
+}
+.ts-input:focus {
+  border-color: var(--teacher-primary);
+  box-shadow: 0 0 0 3px rgba(55,138,221,0.10);
+}
+.ts-input::placeholder { color: #C4C4C4; }
+
+.ts-select { cursor: pointer; }
+
+.ts-info-note {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  padding: 12px 14px;
+  background: #EFF6FF;
+  border: 1.5px solid #BFDBFE;
+  border-radius: 10px;
+  font-size: 13px;
+  color: #1D4ED8;
+  font-weight: 500;
+  line-height: 1.5;
+}
+.ts-info-note svg { color: #3B82F6; flex-shrink: 0; margin-top: 1px; }
+
+.ts-form-actions {
+  display: flex;
+  gap: 10px;
+  padding-top: 14px;
+  border-top: 1px solid var(--teacher-border);
+}
+
+.ts-cancel-btn,
+.ts-save-btn {
+  flex: 1;
+  height: 46px;
+  border-radius: 10px;
+  font-size: 14px;
+  font-weight: 700;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  font-family: inherit;
+  transition: background 0.15s, transform 0.12s;
+}
+
+.ts-cancel-btn {
+  background: #F3F4F6;
+  border: 1.5px solid var(--teacher-border);
+  color: var(--teacher-text);
+}
+.ts-cancel-btn:hover:not(:disabled) { background: #E5E7EB; }
+
+.ts-save-btn {
+  background: var(--teacher-primary);
+  border: none;
+  color: #fff;
+  box-shadow: 0 3px 10px rgba(24,95,165,0.24);
+}
+.ts-save-btn:hover:not(:disabled) {
+  background: var(--teacher-sidebar);
+  transform: translateY(-1px);
+}
+
+.ts-cancel-btn:disabled,
+.ts-save-btn:disabled { opacity: 0.6; cursor: not-allowed; transform: none; }
+
+/* ════════════════════════════════════════════════════
+   VIEW STUDENT MODAL
+════════════════════════════════════════════════════ */
+.ts-view-modal { display: flex; flex-direction: column; gap: 0; }
+
+.ts-view-header {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding-bottom: 16px;
+  border-bottom: 1.5px solid var(--teacher-border);
+  margin-bottom: 4px;
+}
+
+.ts-view-avatar {
+  width: 58px;
+  height: 58px;
+  min-width: 58px;
+  border-radius: 14px;
+  background: var(--teacher-accent);
+  color: var(--teacher-sidebar);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 19px;
+  font-weight: 800;
+  overflow: hidden;
+  flex-shrink: 0;
+}
+
+.ts-view-meta {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  min-width: 0;
+}
+
+.ts-view-name {
+  font-size: 18px;
+  font-weight: 800;
+  color: var(--teacher-text);
+  margin: 0;
+  letter-spacing: -0.02em;
+}
+
+.ts-view-roll {
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--teacher-primary);
+  background: var(--teacher-accent);
+  padding: 2px 9px;
+  border-radius: 5px;
+  width: fit-content;
+  font-family: monospace;
+  letter-spacing: 0.04em;
+}
+
+/* Detail rows */
+.ts-view-details { display: flex; flex-direction: column; }
+
+.ts-view-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  padding: 11px 0;
+  border-bottom: 1px solid rgba(24,95,165,0.07);
+  min-height: 44px;
+}
+.ts-view-row:last-of-type { border-bottom: none; }
+
+.ts-view-label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 12.5px;
+  font-weight: 600;
+  color: var(--teacher-subtext);
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.ts-view-label-icon {
+  width: 28px;
+  height: 28px;
+  min-width: 28px;
+  border-radius: 7px;
+  background: var(--teacher-accent);
+  color: var(--teacher-primary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.ts-view-value {
+  font-size: 13.5px;
+  font-weight: 600;
+  color: var(--teacher-body);
+  text-align: right;
+  word-break: break-word;
+  max-width: 55%;
+}
+
+.ts-empty-text {
+  font-style: italic;
+  color: #9CA3AF;
+  font-weight: 400;
+  font-size: 12.5px;
+}
+
+/* Pending note */
+.ts-view-pending-note {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  padding: 12px 14px;
+  background: #FFFBEB;
+  border: 1.5px solid #FDE68A;
+  border-radius: 10px;
+  font-size: 13px;
+  color: #92400E;
+  font-weight: 500;
+  margin: 12px 0 4px;
+  line-height: 1.5;
+}
+.ts-view-pending-note svg { color: #D97706; flex-shrink: 0; margin-top: 1px; }
+
+/* Address section */
+.ts-view-addresses {
+  margin-top: 16px;
+  padding-top: 16px;
+  border-top: 1.5px solid var(--teacher-border);
+}
+
+.ts-view-addresses-title {
+  font-size: 11.5px;
+  font-weight: 700;
+  color: var(--teacher-subtext);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  margin: 0 0 12px;
+}
+
+.ts-view-addresses-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+.ts-view-address-card {
+  background: var(--teacher-bg);
+  border: 1.5px solid var(--teacher-border);
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.ts-view-address-card-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 14px;
+  background: var(--teacher-card);
+  border-bottom: 1px solid var(--teacher-border);
+}
+
+.ts-view-address-card-icon {
+  width: 28px;
+  height: 28px;
+  min-width: 28px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.ts-view-address-card-icon--permanent { background: #E6F1FB; color: #185FA5; }
+.ts-view-address-card-icon--current   { background: #EAF4F0; color: #0F6E56; }
+
+.ts-view-address-card-type {
+  font-size: 12.5px;
+  font-weight: 700;
+  color: var(--teacher-text);
+}
+
+.ts-view-address-card-body {
+  padding: 12px 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.ts-view-address-line {
+  font-size: 13.5px;
+  font-weight: 500;
+  color: var(--teacher-body);
+  line-height: 1.5;
+  margin: 0;
+}
+
+.ts-view-address-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+}
+
+.ts-view-address-tag {
+  font-size: 11.5px;
+  font-weight: 600;
+  color: var(--teacher-subtext);
+  background: var(--teacher-card);
+  border: 1px solid var(--teacher-border);
+  border-radius: 6px;
+  padding: 2px 8px;
+  white-space: nowrap;
+}
+
+.ts-view-address-tag--pin {
+  background: var(--teacher-accent);
+  color: var(--teacher-primary);
+  border-color: transparent;
+  font-family: monospace;
+  font-weight: 700;
+  letter-spacing: 0.03em;
+}
+
+/* ════════════════════════════════════════════════════
+   RESPONSIVE — TABLET  (≤ 900px)
+════════════════════════════════════════════════════ */
+@media (max-width: 900px) {
+  .ts-kpi-grid              { grid-template-columns: repeat(2, 1fr); }
+  .ts-student-grid          { grid-template-columns: repeat(2, 1fr); }
+  .ts-view-addresses-grid   { grid-template-columns: 1fr; }
+}
+
+/* ════════════════════════════════════════════════════
+   RESPONSIVE — MOBILE  (≤ 640px)
+════════════════════════════════════════════════════ */
+@media (max-width: 640px) {
+  .ts-page           { gap: 14px; }
+  .ts-heading        { font-size: 18px; }
+  .ts-heading-row    { flex-direction: column; align-items: stretch; }
+  .ts-heading-actions { justify-content: flex-end; }
+  .ts-add-btn        { flex: 1; justify-content: center; }
+
+  .ts-role-banner {
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 14px;
+    gap: 10px;
+    border-radius: 12px;
+  }
+  .ts-role-banner__btn { width: 100%; justify-content: center; }
+
+  .ts-kpi-grid       { grid-template-columns: repeat(2, 1fr); gap: 10px; }
+  .ts-kpi-card       { padding: 12px 14px; gap: 10px; }
+  .ts-kpi-icon       { width: 38px; height: 38px; min-width: 38px; border-radius: 10px; }
+  .ts-kpi-value      { font-size: 18px; }
+  .ts-kpi-label      { font-size: 11.5px; white-space: normal; }
+  .ts-kpi-sub        { font-size: 10px; }
+
+  .ts-toolbar        { flex-direction: column; align-items: stretch; }
+  .ts-search-wrap    { min-width: 0; }
+  .ts-filter-group   { justify-content: flex-start; }
+  .ts-sort-btn       { width: 100%; justify-content: center; }
+  .ts-sort-dropdown  { right: auto; left: 0; }
+
+  .ts-student-grid   { grid-template-columns: 1fr; }
+
+  .ts-pagination     { flex-direction: column; align-items: center; gap: 10px; }
+  .ts-page-size      { justify-content: center; }
+
+  .ts-form-row       { grid-template-columns: 1fr; }
+  .ts-form-actions   { flex-direction: column-reverse; }
+  .ts-cancel-btn,
+  .ts-save-btn       { width: 100%; }
+
+  .ts-view-row       { flex-direction: column; align-items: flex-start; gap: 4px; min-height: unset; }
+  .ts-view-value     { text-align: left; max-width: 100%; }
+
+  .ts-class-tabs     { gap: 6px; }
+  .ts-class-tab      { font-size: 12px; padding: 6px 10px; }
+}
+
+/* ════════════════════════════════════════════════════
+   RESPONSIVE — SMALL MOBILE  (≤ 400px)
+════════════════════════════════════════════════════ */
+@media (max-width: 400px) {
+  .ts-kpi-grid  { grid-template-columns: 1fr 1fr; gap: 8px; }
+  .ts-kpi-card  { padding: 10px 12px; gap: 8px; }
+  .ts-kpi-icon  { width: 34px; height: 34px; min-width: 34px; border-radius: 9px; }
+  .ts-kpi-value { font-size: 16px; }
+
+  .ts-tab-role-chip { display: none; }
+}

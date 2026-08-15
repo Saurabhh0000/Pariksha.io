@@ -1,0 +1,23 @@
+/* ─────────────────────────────────────
+   Admin Role — Purple Theme
+   Authority & Control
+───────────────────────────────────── */
+
+:root {
+  --admin-bg:        #EEEDFE;
+  --admin-sidebar:   #534AB7;
+  --admin-primary:   #7F77DD;
+  --admin-accent:    #CECBF6;
+  --admin-text:      #26215C;
+  --admin-subtext:   #534AB7;
+  --admin-card:      #F7F6F2;
+  --admin-body:      #2C2C2A;
+  --admin-danger:    #E53E3E;
+  --admin-success:   #38A169;
+  --admin-warning:   #D69E2E;
+  --admin-border:    #DDDAF7;
+  --admin-hover:     #B8B3F0;
+  --admin-shadow:    0 2px 12px rgba(83, 74, 183, 0.12);
+  --sidebar-width:   240px;
+  --topbar-height:   60px;
+}

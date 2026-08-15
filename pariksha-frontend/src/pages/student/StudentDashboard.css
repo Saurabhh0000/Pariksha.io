@@ -1,0 +1,979 @@
+/* ═══════════════════════════════════════════
+   STUDENT DASHBOARD — Bento Grid — sdb- prefix
+═══════════════════════════════════════════ */
+
+/* ── BENTO GRID SYSTEM ── */
+.sdb-bento-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-auto-rows: min-content;
+  align-items: start;
+  gap: 18px;
+}
+
+.sdb-bento-card {
+  background: var(--student-card);
+  border: 1px solid var(--student-border);
+  border-radius: 20px;
+  padding: 20px;
+  box-shadow: 0 1px 3px rgba(4, 52, 44, 0.04);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.sdb-bento-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 12px 28px rgba(4, 52, 44, 0.08);
+}
+
+.sdb-span-2 { grid-column: span 2; }
+.sdb-span-3 { grid-column: span 3; }
+
+button.sdb-bento-card {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  text-align: left;
+  cursor: pointer;
+  width: 100%;
+  font: inherit;
+}
+.sdb-empty-compact {
+  padding: 8px 0 2px;
+  align-items: flex-start;
+  text-align: left;
+}
+.sdb-empty-compact p {
+  font-size: 12.5px;
+  margin: 0;
+}
+.sdb-empty-compact .sdb-empty-sub {
+  font-size: 10.5px;
+}
+
+/* ── Error state ── */
+.sdb-error-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 60px 20px;
+  text-align: center;
+  background: var(--student-card);
+  border: 1px solid var(--student-border);
+  border-radius: 20px;
+}
+
+.sdb-error-icon {
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  background: #FEE2E2;
+  color: #DC2626;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 8px;
+}
+
+.sdb-error-state h3 {
+  font-size: 18px;
+  font-weight: 800;
+  color: var(--student-text);
+  margin: 0;
+}
+
+.sdb-error-state p {
+  font-size: 13.5px;
+  color: var(--student-subtext);
+  margin: 0;
+}
+
+.sdb-error-sub {
+  font-size: 12px;
+  color: var(--student-subtext);
+  opacity: 0.75;
+  margin-bottom: 16px;
+}
+
+.sdb-retry-btn {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: linear-gradient(135deg, var(--student-primary), var(--student-sidebar));
+  color: #fff;
+  border: none;
+  padding: 0 24px;
+  height: 46px;
+  border-radius: 12px;
+  font-size: 13.5px;
+  font-weight: 700;
+  cursor: pointer;
+  box-shadow: 0 4px 14px rgba(15, 110, 86, 0.28);
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.sdb-retry-btn:hover:not(:disabled) {
+  transform: translateY(-1px);
+  box-shadow: 0 6px 18px rgba(15, 110, 86, 0.36);
+}
+.sdb-retry-btn:disabled { opacity: 0.7; cursor: default; }
+
+/* ── HERO CARD ── */
+.sdb-hero-card {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  background: linear-gradient(135deg, var(--student-sidebar), var(--student-primary));
+  color: #fff;
+  border: none;
+  overflow: hidden;
+  position: relative;
+}
+
+.sdb-hero-card::before {
+  content: "";
+  position: absolute;
+  top: -40%;
+  right: -10%;
+  width: 260px;
+  height: 260px;
+  background: radial-gradient(circle, rgba(255,255,255,0.14), transparent 70%);
+  border-radius: 50%;
+  pointer-events: none;
+}
+
+.sdb-hero-text { flex: 1; min-width: 0; z-index: 1; }
+
+.sdb-hero-title {
+  font-size: 24px;
+  font-weight: 800;
+  margin: 0 0 6px;
+  color: #fff;
+}
+
+.sdb-hero-sub {
+  font-size: 13.5px;
+  color: rgba(255, 255, 255, 0.82);
+  font-weight: 600;
+  margin: 0 0 10px;
+}
+
+.sdb-hero-motivation {
+  font-size: 13px;
+  color: #fff;
+  font-weight: 600;
+  background: rgba(255, 255, 255, 0.16);
+  display: inline-block;
+  padding: 7px 14px;
+  border-radius: 20px;
+  margin: 0;
+  backdrop-filter: blur(4px);
+}
+
+.sdb-hero-side {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  z-index: 1;
+  flex-shrink: 0;
+}
+
+.sdb-hero-ring {
+  position: relative;
+  width: 80px;
+  height: 80px;
+}
+
+.sdb-hero-ring-svg { width: 80px; height: 80px; transform: rotate(-90deg); }
+
+.sdb-hero-ring-track {
+  fill: none;
+  stroke: rgba(255, 255, 255, 0.22);
+  stroke-width: 7;
+}
+
+.sdb-hero-ring-fill {
+  fill: none;
+  stroke: #fff;
+  stroke-width: 7;
+  stroke-linecap: round;
+  transition: stroke-dashoffset 0.6s ease;
+}
+
+.sdb-hero-ring-value {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 16px;
+  font-weight: 800;
+  color: #fff;
+}
+
+.sdb-hero-cta {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: #fff;
+  color: var(--student-primary);
+  border: none;
+  padding: 0 16px;
+  height: 38px;
+  border-radius: 10px;
+  font-size: 12.5px;
+  font-weight: 700;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: transform 0.15s ease;
+}
+
+.sdb-hero-cta:hover { transform: translateY(-1px); }
+
+/* ── KPI CARDS ── */
+.sdb-kpi-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.sdb-kpi-value {
+  font-size: 26px;
+  font-weight: 800;
+  color: var(--student-text);
+}
+
+.sdb-kpi-label {
+  font-size: 12.5px;
+  font-weight: 700;
+  color: var(--student-subtext);
+}
+
+.sdb-stat-icon {
+  width: 48px;
+  height: 48px;
+  min-width: 48px;
+  border-radius: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.sdb-icon-green  { background: #DCFCE7; color: #16A34A; }
+.sdb-icon-blue   { background: #DBEAFE; color: #2563EB; }
+.sdb-icon-purple { background: #EDE9FE; color: #7C3AED; }
+.sdb-icon-orange { background: #FFEDD5; color: #EA580C; }
+
+.sdb-progress-track {
+  height: 6px;
+  border-radius: 4px;
+  background: var(--student-bg);
+  overflow: hidden;
+}
+
+.sdb-progress-bar {
+  height: 100%;
+  border-radius: 4px;
+  transition: width 0.4s ease;
+}
+
+.sdb-progress-green { background: #16A34A; }
+.sdb-progress-blue  { background: #2563EB; }
+.sdb-progress-amber { background: #B45309; }
+.sdb-progress-red   { background: #B91C1C; }
+
+.sdb-badge {
+  align-self: flex-start;
+  font-size: 10.5px;
+  font-weight: 700;
+  padding: 4px 10px;
+  border-radius: 20px;
+}
+
+.sdb-badge-good    { background: #DCFCE7; color: #16A34A; }
+.sdb-badge-avg     { background: #FEF3C7; color: #92400E; }
+.sdb-badge-low     { background: #FEE2E2; color: #B91C1C; }
+.sdb-badge-neutral { background: var(--student-bg); color: var(--student-subtext); }
+
+.sdb-kpi-next {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.sdb-kpi-next-label {
+  font-size: 10.5px;
+  color: var(--student-subtext);
+  font-weight: 600;
+}
+
+.sdb-kpi-next-value {
+  font-size: 12.5px;
+  font-weight: 700;
+  color: var(--student-text);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* ── Shared card header ── */
+.sdb-card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 14px;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.sdb-card-title-wrap {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: var(--student-text);
+}
+
+/* ── Section header icon — colored rounded background ──
+   Targets the lucide <svg> that sits directly inside every
+   card header (Recent Performance, Timetable, Activity,
+   Deadlines, AI Mentor, Achievements, Quick Actions, etc.)
+   Gives every section icon the same "chip" treatment as the
+   KPI icons instead of a bare outline glyph. */
+.sdb-card-title-wrap > svg {
+  width: 34px;
+  height: 34px;
+  min-width: 34px;
+  padding: 8px;
+  box-sizing: border-box;
+  border-radius: 12px;
+  background: var(--student-accent);
+  color: var(--student-primary);
+  flex-shrink: 0;
+}
+
+/* Per-section color variants — matches the KPI icon palette
+   so the whole dashboard reads as one consistent system */
+.sdb-ai-card .sdb-card-title-wrap > svg {
+  background: #EDE9FE;
+  color: #7C3AED;
+}
+
+.sdb-achievements-card .sdb-card-title-wrap > svg {
+  background: #FFEDD5;
+  color: #EA580C;
+}
+
+.sdb-quick-links-card .sdb-card-title-wrap > svg {
+  background: #DBEAFE;
+  color: #2563EB;
+}
+
+/* Recent Performance / Analytics use the growth-green tone */
+.sdb-bento-card:has(.sdb-marks-list) .sdb-card-title-wrap > svg,
+.sdb-bento-card:has(.sdb-analytics-list) .sdb-card-title-wrap > svg {
+  background: #DCFCE7;
+  color: #16A34A;
+}
+
+/* Timetable + Deadlines use the purple tone (matches Exam KPI) */
+.sdb-bento-card:has(.sdb-timetable-list) .sdb-card-title-wrap > svg {
+  background: #EDE9FE;
+  color: #7C3AED;
+}
+
+/* Recent Activity timeline uses a soft blue tone */
+.sdb-bento-card:has(.sdb-timeline) .sdb-card-title-wrap > svg,
+.sdb-bento-card:has(.sdb-empty) .sdb-card-title-wrap > svg {
+  background: #DBEAFE;
+  color: #2563EB;
+}
+
+.sdb-card-title {
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--student-text);
+}
+
+.sdb-card-link {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  background: none;
+  border: none;
+  color: var(--student-primary);
+  font-size: 12px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.sdb-card-link:hover { text-decoration: underline; }
+
+/* ── Empty states ── */
+.sdb-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 34px 14px;
+  color: var(--student-subtext);
+  text-align: center;
+}
+
+.sdb-empty p { font-size: 13px; font-weight: 700; color: var(--student-text); margin: 2px 0 0; }
+.sdb-empty-sub { font-size: 11.5px; color: var(--student-subtext); }
+
+/* ── AI Mentor card ── */
+.sdb-ai-card {
+  background: linear-gradient(160deg, var(--student-accent), var(--student-card) 60%);
+  border: 1px solid var(--student-border);
+}
+
+.sdb-ai-body { display: flex; flex-direction: column; gap: 10px; }
+
+.sdb-ai-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.sdb-ai-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  font-weight: 600;
+  padding: 9px 12px;
+  border-radius: 10px;
+}
+
+.sdb-ai-strong { background: #DCFCE7; color: #16A34A; }
+.sdb-ai-weak   { background: #FEF3C7; color: #92400E; }
+
+.sdb-ai-recommend {
+  background: var(--student-card);
+  border: 1px dashed var(--student-primary);
+  border-radius: 10px;
+  padding: 10px 12px;
+}
+
+.sdb-ai-recommend-label {
+  font-size: 10.5px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.4px;
+  color: var(--student-primary);
+}
+
+.sdb-ai-recommend p {
+  font-size: 13px;
+  color: var(--student-text);
+  margin: 4px 0 0;
+}
+
+/* ── Analytics ── */
+.sdb-analytics-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.sdb-analytics-row {
+  display: grid;
+  grid-template-columns: 90px 1fr 44px;
+  align-items: center;
+  gap: 10px;
+}
+
+.sdb-analytics-label {
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--student-text);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.sdb-analytics-track {
+  height: 8px;
+  border-radius: 4px;
+  background: var(--student-bg);
+  overflow: hidden;
+}
+
+.sdb-analytics-bar {
+  height: 100%;
+  border-radius: 4px;
+  transition: width 0.4s ease;
+}
+
+.sdb-analytics-value {
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--student-subtext);
+  text-align: right;
+}
+
+/* ── Timetable list ── */
+.sdb-timetable-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.sdb-timetable-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 11px 12px;
+  border-radius: 12px;
+  background: var(--student-bg);
+  border-left: 3px solid var(--student-primary);
+}
+
+.sdb-timetable-current {
+  border-left-color: #16A34A;
+  background: rgba(22, 163, 74, 0.08);
+}
+
+.sdb-timetable-time {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--student-subtext);
+  min-width: 78px;
+  padding-top: 2px;
+}
+
+.sdb-timetable-body {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.sdb-timetable-subject {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--student-text);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.sdb-timetable-meta {
+  display: flex;
+  gap: 10px;
+  font-size: 11px;
+  color: var(--student-subtext);
+}
+
+.sdb-live-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 9.5px;
+  font-weight: 800;
+  color: #16A34A;
+  background: #DCFCE7;
+  padding: 2px 8px;
+  border-radius: 20px;
+  text-transform: uppercase;
+  letter-spacing: 0.3px;
+}
+
+.sdb-live-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #16A34A;
+  animation: sdb-pulse 1.4s ease-in-out infinite;
+}
+
+/* ── Timeline (activity) ── */
+.sdb-timeline {
+  display: flex;
+  flex-direction: column;
+}
+
+.sdb-timeline-item {
+  display: flex;
+  gap: 12px;
+}
+
+.sdb-timeline-marker {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.sdb-timeline-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: var(--student-primary);
+  margin-top: 4px;
+  flex-shrink: 0;
+}
+
+.sdb-timeline-line {
+  width: 2px;
+  flex: 1;
+  background: var(--student-border);
+  margin: 4px 0;
+  min-height: 20px;
+}
+
+.sdb-timeline-body {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+  padding-bottom: 16px;
+}
+
+.sdb-timeline-label {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--student-text);
+}
+
+.sdb-timeline-time {
+  font-size: 11px;
+  color: var(--student-subtext);
+}
+
+/* ── Marks list ── */
+.sdb-marks-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.sdb-marks-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 12px;
+  border-radius: 12px;
+  background: var(--student-bg);
+}
+
+.sdb-marks-subject-wrap {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+}
+
+.sdb-marks-subject { font-size: 13px; font-weight: 700; color: var(--student-text); }
+.sdb-marks-exam { font-size: 11px; color: var(--student-subtext); }
+
+.sdb-marks-pct {
+  font-size: 14px;
+  font-weight: 800;
+  padding: 3px 10px;
+  border-radius: 20px;
+}
+
+.sdb-marks-good { background: #DCFCE7; color: #16A34A; }
+.sdb-marks-avg  { background: #FEF3C7; color: #92400E; }
+.sdb-marks-low  { background: #FEE2E2; color: #B91C1C; }
+
+/* ── Achievements ── */
+.sdb-achieve-count {
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--student-primary);
+  background: var(--student-accent);
+  padding: 4px 12px;
+  border-radius: 20px;
+}
+
+.sdb-achievements-grid {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 12px;
+}
+
+.sdb-achievement-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 6px;
+  padding: 18px 10px;
+  border-radius: 14px;
+  border: 1px solid var(--student-border);
+  transition: transform 0.15s ease;
+}
+
+.sdb-achievement-earned {
+  background: linear-gradient(160deg, var(--student-accent), var(--student-card));
+}
+
+.sdb-achievement-earned:hover {
+  transform: translateY(-2px);
+}
+
+.sdb-achievement-locked {
+  background: var(--student-bg);
+  filter: grayscale(0.5);
+  opacity: 0.7;
+}
+
+.sdb-achievement-icon {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.sdb-achievement-earned .sdb-achievement-icon {
+  background: var(--student-primary);
+  color: #fff;
+  box-shadow: 0 0 0 6px rgba(15, 110, 86, 0.12);
+}
+
+.sdb-achievement-locked .sdb-achievement-icon {
+  background: var(--student-border);
+  color: var(--student-subtext);
+}
+
+.sdb-achievement-title {
+  font-size: 12.5px;
+  font-weight: 800;
+  color: var(--student-text);
+}
+
+.sdb-achievement-desc {
+  font-size: 10.5px;
+  color: var(--student-subtext);
+  line-height: 1.4;
+}
+
+.sdb-achievement-status {
+  font-size: 9.5px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.4px;
+  color: var(--student-primary);
+  padding: 2px 8px;
+  border-radius: 20px;
+  background: var(--student-card);
+}
+
+.sdb-achievement-locked .sdb-achievement-status {
+  color: var(--student-subtext);
+  background: transparent;
+}
+
+/* ── Quick Actions ── */
+.sdb-quick-links-grid {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 12px;
+}
+
+.sdb-quick-link {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 18px 10px;
+  border-radius: 14px;
+  background: var(--student-bg);
+  border: 1px solid var(--student-border);
+  color: var(--student-text);
+  font-size: 11.5px;
+  font-weight: 700;
+  cursor: pointer;
+  min-height: 44px;
+  transition: background 0.18s ease, transform 0.15s ease, box-shadow 0.18s ease;
+}
+
+.sdb-quick-link:hover {
+  background: var(--student-card);
+  transform: translateY(-3px);
+  box-shadow: 0 8px 20px rgba(4, 52, 44, 0.08);
+}
+
+.sdb-quick-link-icon {
+  width: 40px;
+  height: 40px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* ── Skeletons ── */
+@keyframes sdb-shimmer {
+  0% { background-position: 100% 0; }
+  100% { background-position: -100% 0; }
+}
+
+@keyframes sdb-pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.3; }
+}
+
+.sdb-skel { cursor: default; pointer-events: none; }
+
+.sdb-skel-hero { min-height: 140px; }
+
+.sdb-skel-icon {
+  width: 48px;
+  height: 48px;
+  border-radius: 14px;
+  background: linear-gradient(90deg, var(--student-bg) 25%, var(--student-border) 37%, var(--student-bg) 63%);
+  background-size: 400% 100%;
+  animation: sdb-shimmer 1.4s ease infinite;
+}
+
+.sdb-skel-lines {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  width: 100%;
+}
+
+.sdb-skel-line {
+  height: 12px;
+  border-radius: 4px;
+  background: linear-gradient(90deg, var(--student-bg) 25%, var(--student-border) 37%, var(--student-bg) 63%);
+  background-size: 400% 100%;
+  animation: sdb-shimmer 1.4s ease infinite;
+}
+
+.sdb-skel-line-lg { width: 60%; height: 16px; }
+.sdb-skel-line-sm { width: 40%; }
+
+.sdb-skel-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.sdb-skel-row {
+  height: 44px;
+  border-radius: 10px;
+  background: linear-gradient(90deg, var(--student-bg) 25%, var(--student-border) 37%, var(--student-bg) 63%);
+  background-size: 400% 100%;
+  animation: sdb-shimmer 1.4s ease infinite;
+}
+
+/* ═══════════════════════════════════════════
+   RESPONSIVE — TABLET (≤1024px)
+═══════════════════════════════════════════ */
+@media (max-width: 1024px) {
+  .sdb-bento-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .sdb-span-2, .sdb-span-3 { grid-column: span 2; }
+
+  .sdb-achievements-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  .sdb-quick-links-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+/* ═══════════════════════════════════════════
+   RESPONSIVE — TABLET SMALL (≤768px)
+═══════════════════════════════════════════ */
+@media (max-width: 768px) {
+  .sdb-bento-grid {
+    grid-template-columns: 1fr;
+    gap: 14px;
+  }
+
+  .sdb-span-2, .sdb-span-3 { grid-column: span 1; }
+
+  .sdb-hero-card {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 16px;
+  }
+
+  .sdb-hero-side {
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+  }
+
+  .sdb-achievements-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  .sdb-quick-links-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  .sdb-analytics-row {
+    grid-template-columns: 70px 1fr 38px;
+  }
+}
+
+/* ═══════════════════════════════════════════
+   RESPONSIVE — MOBILE (≤480px)
+═══════════════════════════════════════════ */
+@media (max-width: 480px) {
+  .sdb-bento-card { padding: 16px; border-radius: 16px; }
+
+  .sdb-hero-title { font-size: 19px; }
+  .sdb-hero-sub, .sdb-hero-motivation { font-size: 12px; }
+  .sdb-hero-ring, .sdb-hero-ring-svg { width: 64px; height: 64px; }
+  .sdb-hero-ring-value { font-size: 14px; }
+
+  .sdb-kpi-value { font-size: 20px; }
+  .sdb-stat-icon { width: 42px; height: 42px; min-width: 42px; }
+
+  .sdb-card-title-wrap > svg {
+    width: 30px;
+    height: 30px;
+    min-width: 30px;
+    padding: 7px;
+    border-radius: 10px;
+  }
+
+  .sdb-achievements-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .sdb-quick-links-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+  }
+
+  .sdb-timetable-time { min-width: 60px; font-size: 10px; }
+
+  .sdb-analytics-row {
+    grid-template-columns: 60px 1fr 34px;
+    gap: 6px;
+  }
+
+  .sdb-analytics-label { font-size: 11px; }
+}
+
+@media (max-width: 360px) {
+  .sdb-achievements-grid,
+  .sdb-quick-links-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
