@@ -101,26 +101,29 @@
 }
 .tr-paper-selector-label svg { color: var(--teacher-primary); }
 
-/* Paper tabs */
+/* ── Paper tabs — FIX: uniform size + aligned icon/text ── */
 .tr-paper-tabs {
   display: flex;
-  align-items: flex-start;
-  gap: 8px;
+  align-items: stretch;
+  gap: 10px;
   flex-wrap: wrap;
 }
 
 .tr-paper-tab {
   display: flex;
   flex-direction: column;
-  align-items: flex-start;
-  gap: 3px;
-  padding: 10px 14px;
+  justify-content: center;
+  gap: 4px;
+  width: 192px;
+  height: 60px;
+  padding: 0 14px;
   border-radius: 10px;
   border: 1.5px solid var(--teacher-border);
   background: var(--teacher-bg);
   cursor: pointer;
   text-align: left;
-  max-width: 200px;
+  box-sizing: border-box;
+  flex-shrink: 0;
   transition: background 0.15s, border-color 0.15s;
 }
 .tr-paper-tab:hover {
@@ -135,6 +138,13 @@
 .tr-paper-tab--active .tr-paper-tab-type  { color: rgba(255,255,255,0.75); }
 .tr-paper-tab--active .tr-paper-tab-zap   { color: #FCD34D; }
 
+.tr-paper-tab-title-row {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  min-width: 0;
+}
+
 .tr-paper-tab-zap { color: #7C3AED; flex-shrink: 0; }
 
 .tr-paper-tab-title {
@@ -144,13 +154,16 @@
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-  max-width: 170px;
+  min-width: 0;
 }
 
 .tr-paper-tab-type {
   font-size: 11px;
   font-weight: 600;
   color: var(--teacher-subtext);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 /* Paper info strip */
@@ -177,21 +190,6 @@
 
 /* ══════════════════════════════════════════════════
    STATS STRIP
-   Redesigned to match TeacherMarks.css's .tm-stat-card
-   language: gradient tint background, colored border,
-   diagonal gloss corner, an icon sitting in a rotate-
-   on-hover colored circle, and a color-matched value.
-
-   NOTE: the JSX renders the icon SVG directly as the
-   first child of .tr-stat (no separate icon-wrapper div
-   like the other pages use), so the circular backdrop is
-   built with a CSS-only trick: box-sizing: border-box +
-   padding on the svg itself turns it into a same-size
-   colored box, since (46px width) - (11px padding * 2)
-   = 24px, which matches the icon's native 24x24 viewBox
-   almost exactly. No JSX changes needed.
-   Same 4 color slots as before (blue / green / indigo /
-   cyan), same class names.
 ══════════════════════════════════════════════════ */
 .tr-stats-strip {
   display: grid;
@@ -215,7 +213,6 @@
   overflow: hidden;
 }
 
-/* Subtle diagonal gloss strip */
 .tr-stat::after {
   content: "";
   position: absolute;
@@ -233,7 +230,6 @@
   box-shadow: 0 8px 24px rgba(0,0,0,0.10);
 }
 
-/* Colour variants — card */
 .tr-stat--blue   { border-color: #BFDBFE; background: linear-gradient(135deg, #EFF6FF 0%, #fff 100%); }
 .tr-stat--green  { border-color: #BBF7D0; background: linear-gradient(135deg, #F0FDF4 0%, #fff 100%); }
 .tr-stat--indigo { border-color: #C7D2FE; background: linear-gradient(135deg, #EEF2FF 0%, #fff 100%); }
@@ -244,8 +240,6 @@
 .tr-stat--indigo::after { background: #4338CA; }
 .tr-stat--cyan::after   { background: #0E7490; }
 
-/* Icon "circle" — built from the bare svg via border-box + padding
-   rather than a wrapper div (see note above) */
 .tr-stat > svg:first-child {
   width: 46px;
   height: 46px;
@@ -573,6 +567,7 @@
 .tr-grade--c     { background: #FEF3C7; color: #92400E; }
 .tr-grade--d     { background: #FED7AA; color: #9A3412; }
 .tr-grade--f     { background: #FEE2E2; color: #991B1B; }
+.tr-grade--pending { background: var(--teacher-bg); color: var(--teacher-subtext); }
 
 /* Status badge */
 .tr-status-badge {
@@ -677,7 +672,6 @@
   gap: 14px;
 }
 
-/* Header */
 .tr-detail-header {
   display: flex;
   align-items: center;
@@ -740,6 +734,7 @@
   justify-content: center;
   flex-shrink: 0;
 }
+.tr-grade--pending { background: var(--teacher-bg); color: var(--teacher-subtext); }
 
 /* Score boxes */
 .tr-detail-scores {
@@ -796,6 +791,17 @@
   transition: width 0.4s ease;
 }
 
+.tr-detail-note {
+  font-size: 12.5px;
+  color: var(--teacher-subtext);
+  background: #FFFBEB;
+  border: 1px solid #FDE68A;
+  border-radius: 10px;
+  padding: 10px 12px;
+  margin: 0;
+  line-height: 1.5;
+}
+
 /* Detail rows */
 .tr-detail-row {
   display: flex;
@@ -822,7 +828,9 @@
 }
 
 /* ══════════════════════════════════════════════════
-   PAGINATION
+   PAGINATION — FIX: matches standard app pattern
+   (left "X–Y of Z", right rounded-square buttons,
+   no rows-per-page dropdown, no ellipsis)
 ══════════════════════════════════════════════════ */
 .tr-pagination {
   display: flex;
@@ -837,28 +845,17 @@
   box-shadow: var(--teacher-shadow);
 }
 
-.tr-page-size {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  font-size: 13px;
-  font-weight: 500;
+.tr-pagination-info {
+  font-size: 12.5px;
+  font-weight: 600;
   color: var(--teacher-subtext);
 }
 
-.tr-page-size-select {
-  min-height: 34px;
-  padding: 0 8px;
-  border: 1.5px solid var(--teacher-border);
-  border-radius: 7px;
-  font-size: 13px;
-  color: var(--teacher-body);
-  background: var(--teacher-bg);
-  cursor: pointer;
-  outline: none;
+.tr-page-controls {
+  display: flex;
+  align-items: center;
+  gap: 6px;
 }
-
-.tr-page-controls { display: flex; align-items: center; gap: 4px; }
 
 .tr-page-btn {
   display: inline-flex;
@@ -871,10 +868,10 @@
   border: 1.5px solid var(--teacher-border);
   background: var(--teacher-card);
   font-size: 13px;
-  font-weight: 600;
+  font-weight: 700;
   color: var(--teacher-text);
   cursor: pointer;
-  transition: background 0.15s, border-color 0.15s;
+  transition: background 0.15s, border-color 0.15s, color 0.15s;
 }
 .tr-page-btn:hover:not(:disabled):not(.tr-page-btn--active) {
   background: var(--teacher-accent);
@@ -887,20 +884,6 @@
   color: #fff !important;
 }
 
-.tr-page-ellipsis {
-  font-size: 13px;
-  color: var(--teacher-subtext);
-  padding: 0 4px;
-  user-select: none;
-}
-
-.tr-page-info {
-  font-size: 13px;
-  font-weight: 500;
-  color: var(--teacher-subtext);
-  white-space: nowrap;
-}
-
 /* ══════════════════════════════════════════════════
    RESPONSIVE
 ══════════════════════════════════════════════════ */
@@ -908,10 +891,10 @@
   .tr-stats-strip    { grid-template-columns: repeat(2, 1fr); }
   .tr-toolbar        { flex-direction: column; align-items: stretch; }
   .tr-search-wrap    { max-width: 100%; }
-  .tr-pagination     { flex-direction: column; align-items: center; }
+  .tr-pagination     { flex-direction: column; align-items: flex-start; }
   .tr-detail-scores  { grid-template-columns: repeat(3, 1fr); }
-  .tr-paper-tabs     { gap: 6px; }
-  .tr-paper-tab      { max-width: 160px; }
+  .tr-paper-tabs     { gap: 8px; }
+  .tr-paper-tab      { width: 160px; height: 56px; }
 }
 
 @media (max-width: 480px) {
@@ -922,6 +905,7 @@
   .tr-stat__value    { font-size: 18px; }
   .tr-detail-scores  { grid-template-columns: repeat(3, 1fr); gap: 8px; }
   .tr-detail-score-value { font-size: 16px; }
-  .tr-paper-tab      { max-width: 140px; }
+  .tr-paper-tab      { width: 140px; height: 54px; }
   .tr-heading-row    { flex-direction: column; }
+  .tr-page-controls  { flex-wrap: wrap; justify-content: center; }
 }

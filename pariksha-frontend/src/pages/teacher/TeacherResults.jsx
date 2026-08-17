@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback, useRef } from "react";
 import {
   ClipboardList,
   Users,
@@ -28,7 +28,8 @@ import teacherService from "../../services/teacherService";
 import "./TeacherResults.css";
 
 // ── Constants ─────────────────────────────────────────
-const PAGE_SIZES = [10, 20, 50];
+const PAGE_SIZE = 10;
+const PAGE_THRESH = 6; // pagination only shows above this count
 
 const SORT_OPTIONS = [
   { value: "name_asc", label: "Student Name A → Z" },
@@ -58,18 +59,18 @@ function gradeClass(pct) {
   return "tr-grade--f";
 }
 
-function statusClass(status) {
-  switch (status?.toUpperCase()) {
-    case "PASSED":
-      return "tr-status--pass";
-    case "FAILED":
-      return "tr-status--fail";
-    case "PENDING":
-      return "tr-status--pending";
+// FIX: ExamSessionStatus is IN_PROGRESS / SUBMITTED / EVALUATED —
+// there is no PASSED/FAILED on the backend. Map real statuses to labels.
+function statusMeta(status) {
+  switch (status) {
+    case "EVALUATED":
+      return { label: "Evaluated", cls: "tr-status--pass" };
     case "SUBMITTED":
-      return "tr-status--submitted";
+      return { label: "Pending Review", cls: "tr-status--submitted" };
+    case "IN_PROGRESS":
+      return { label: "In Progress", cls: "tr-status--pending" };
     default:
-      return "tr-status--pending";
+      return { label: status ?? "—", cls: "tr-status--pending" };
   }
 }
 
@@ -96,6 +97,7 @@ function getInitials(r) {
   return (r?.studentName?.[0] ?? "S").toUpperCase();
 }
 
+// FIX: sort by real fields — totalMarksObtained, not totalScore
 function sortResults(list, key) {
   const s = [...list];
   switch (key) {
@@ -108,22 +110,62 @@ function sortResults(list, key) {
         (b.studentName ?? "").localeCompare(a.studentName ?? ""),
       );
     case "score_desc":
-      return s.sort((a, b) => (b.totalScore ?? 0) - (a.totalScore ?? 0));
+      return s.sort(
+        (a, b) => (b.totalMarksObtained ?? -1) - (a.totalMarksObtained ?? -1),
+      );
     case "score_asc":
-      return s.sort((a, b) => (a.totalScore ?? 0) - (b.totalScore ?? 0));
+      return s.sort(
+        (a, b) => (a.totalMarksObtained ?? -1) - (b.totalMarksObtained ?? -1),
+      );
     case "pct_desc":
-      return s.sort((a, b) => (b.percentage ?? 0) - (a.percentage ?? 0));
+      return s.sort((a, b) => (b.percentage ?? -1) - (a.percentage ?? -1));
     case "pct_asc":
-      return s.sort((a, b) => (a.percentage ?? 0) - (b.percentage ?? 0));
+      return s.sort((a, b) => (a.percentage ?? -1) - (b.percentage ?? -1));
     default:
       return s;
   }
 }
 
+// FIX: derive correct/wrong/skipped/time-taken from real fields
+// (answers[] with isCorrect/answerText, startedAt/submittedAt) since
+// the backend never sends these as flat counts.
+function deriveAnswerStats(result) {
+  const answers = result.answers ?? [];
+  const correct = answers.filter((a) => a.isCorrect === true).length;
+  const wrong = answers.filter((a) => a.isCorrect === false).length;
+  const skipped = answers.filter(
+    (a) => a.answerText == null || a.answerText === "",
+  ).length;
+  const pendingReview = answers.filter(
+    (a) => a.isCorrect == null && a.answerText,
+  ).length;
+
+  let timeTaken = null;
+  if (result.startedAt && result.submittedAt) {
+    const ms = new Date(result.submittedAt) - new Date(result.startedAt);
+    timeTaken = Math.max(0, Math.round(ms / 60000));
+  }
+
+  return { correct, wrong, skipped, pendingReview, timeTaken };
+}
+
 // ── Sub-components ────────────────────────────────────
 function SortDropdown({ sortKey, setSortKey, show, setShow }) {
+  const wrapRef = useRef(null);
+
+  // FIX: close on outside click — previously only closed via option click
+  useEffect(() => {
+    function handleClickOutside(e) {
+      if (wrapRef.current && !wrapRef.current.contains(e.target)) {
+        setShow(false);
+      }
+    }
+    if (show) document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, [show, setShow]);
+
   return (
-    <div className="tr-sort-wrap">
+    <div className="tr-sort-wrap" ref={wrapRef}>
       <button className="tr-sort-btn" onClick={() => setShow((p) => !p)}>
         <ArrowUpDown size={14} />
         {SORT_OPTIONS.find((o) => o.value === sortKey)?.label ?? "Sort"}
@@ -149,89 +191,75 @@ function SortDropdown({ sortKey, setSortKey, show, setShow }) {
   );
 }
 
+// FIX: pagination redesigned to match the standard app-wide pattern —
+// left "X–Y of Z" text, right rounded-square prev/number/next buttons,
+// no rows-per-page dropdown, no ellipsis, only rendered above PAGE_THRESH.
 function Pagination({
   page,
   totalPages,
   setPage,
-  pageSize,
-  setPageSize,
+  rangeStart,
+  rangeEnd,
   totalRows,
 }) {
-  if (totalRows === 0) return null;
-  const pages = Array.from({ length: totalPages }, (_, i) => i + 1)
-    .filter((p) => p === 1 || p === totalPages || Math.abs(p - page) <= 1)
-    .reduce((acc, p, idx, arr) => {
-      if (idx > 0 && p - arr[idx - 1] > 1) acc.push("...");
-      acc.push(p);
-      return acc;
-    }, []);
+  if (totalRows <= PAGE_THRESH) return null;
   return (
     <div className="tr-pagination">
-      <div className="tr-page-size">
-        <span>Rows per page</span>
-        <select
-          className="tr-page-size-select"
-          value={pageSize}
-          onChange={(e) => {
-            setPageSize(Number(e.target.value));
-            setPage(1);
-          }}>
-          {PAGE_SIZES.map((n) => (
-            <option key={n} value={n}>
-              {n}
-            </option>
-          ))}
-        </select>
-      </div>
+      <span className="tr-pagination-info">
+        {rangeStart}–{rangeEnd} of {totalRows}
+      </span>
       <div className="tr-page-controls">
         <button
           className="tr-page-btn"
-          onClick={() => setPage(1)}
-          disabled={page === 1}>
-          «
-        </button>
-        <button
-          className="tr-page-btn"
           onClick={() => setPage((p) => Math.max(1, p - 1))}
-          disabled={page === 1}>
-          <ChevronLeft size={14} />
+          disabled={page === 1}
+          aria-label="Previous page">
+          <ChevronLeft size={16} strokeWidth={2.2} />
         </button>
-        {pages.map((p, i) =>
-          p === "..." ? (
-            <span key={`e${i}`} className="tr-page-ellipsis">
-              …
-            </span>
-          ) : (
-            <button
-              key={p}
-              className={`tr-page-btn tr-page-btn--num ${page === p ? "tr-page-btn--active" : ""}`}
-              onClick={() => setPage(p)}>
-              {p}
-            </button>
-          ),
-        )}
+        {Array.from({ length: totalPages }, (_, i) => i + 1).map((p) => (
+          <button
+            key={p}
+            className={`tr-page-btn tr-page-btn--num ${page === p ? "tr-page-btn--active" : ""}`}
+            onClick={() => setPage(p)}
+            aria-current={p === page ? "page" : undefined}>
+            {p}
+          </button>
+        ))}
         <button
           className="tr-page-btn"
           onClick={() => setPage((p) => Math.min(totalPages, p + 1))}
-          disabled={page === totalPages}>
-          <ChevronRight size={14} />
-        </button>
-        <button
-          className="tr-page-btn"
-          onClick={() => setPage(totalPages)}
-          disabled={page === totalPages}>
-          »
+          disabled={page === totalPages}
+          aria-label="Next page">
+          <ChevronRight size={16} strokeWidth={2.2} />
         </button>
       </div>
-      <span className="tr-page-info">
-        Page {page} of {totalPages}
-      </span>
     </div>
   );
 }
 
 // ── Result detail modal ───────────────────────────────
 function ResultDetailModal({ result, onClose }) {
+  const { correct, wrong, skipped, pendingReview, timeTaken } =
+    deriveAnswerStats(result);
+  const meta = statusMeta(result.status);
+  const pct = result.percentage;
+  const hasPct = pct != null;
+  const grade = hasPct ? calcGrade(pct) : "–";
+
+  const rows = [
+    { label: "Submitted At", value: fmtDateTime(result.submittedAt) },
+    {
+      label: "Time Taken",
+      value: timeTaken != null ? `${timeTaken} min` : "—",
+    },
+    { label: "Correct", value: correct },
+    { label: "Wrong", value: wrong },
+    { label: "Skipped", value: skipped },
+  ];
+  if (pendingReview > 0) {
+    rows.push({ label: "Awaiting Teacher Review", value: pendingReview });
+  }
+
   return (
     <Modal title="Student Result Detail" onClose={onClose} size="medium">
       <div className="tr-detail-modal">
@@ -245,13 +273,11 @@ function ResultDetailModal({ result, onClose }) {
             {result.studentRollCode && (
               <span className="tr-detail-roll">{result.studentRollCode}</span>
             )}
-            <span className={`tr-status-badge ${statusClass(result.status)}`}>
-              {result.status ?? "Pending"}
-            </span>
+            <span className={`tr-status-badge ${meta.cls}`}>{meta.label}</span>
           </div>
           <div
-            className={`tr-grade-large ${gradeClass(result.percentage ?? 0)}`}>
-            {calcGrade(result.percentage ?? 0)}
+            className={`tr-grade-large ${hasPct ? gradeClass(pct) : "tr-grade--pending"}`}>
+            {grade}
           </div>
         </div>
 
@@ -259,19 +285,19 @@ function ResultDetailModal({ result, onClose }) {
         <div className="tr-detail-scores">
           <div className="tr-detail-score-box tr-detail-score-box--primary">
             <span className="tr-detail-score-value">
-              {result.totalScore ?? "—"}
+              {result.totalMarksObtained ?? "—"}
             </span>
             <span className="tr-detail-score-label">Score</span>
           </div>
           <div className="tr-detail-score-box">
             <span className="tr-detail-score-value">
-              {result.maxScore ?? "—"}
+              {result.totalMarks ?? "—"}
             </span>
             <span className="tr-detail-score-label">Max Marks</span>
           </div>
           <div className="tr-detail-score-box">
             <span className="tr-detail-score-value">
-              {(result.percentage ?? 0).toFixed(1)}%
+              {hasPct ? `${pct.toFixed(1)}%` : "—"}
             </span>
             <span className="tr-detail-score-label">Percentage</span>
           </div>
@@ -281,21 +307,19 @@ function ResultDetailModal({ result, onClose }) {
         <div className="tr-detail-progress-wrap">
           <div
             className="tr-detail-progress-bar"
-            style={{ width: `${Math.min(result.percentage ?? 0, 100)}%` }}
+            style={{ width: `${Math.min(hasPct ? pct : 0, 100)}%` }}
           />
         </div>
 
+        {!hasPct && result.status === "SUBMITTED" && (
+          <p className="tr-detail-note">
+            This exam has written answers still awaiting your review. Final
+            score will appear once evaluated.
+          </p>
+        )}
+
         {/* Meta rows */}
-        {[
-          { label: "Submitted At", value: fmtDateTime(result.submittedAt) },
-          {
-            label: "Time Taken",
-            value: result.timeTaken ? `${result.timeTaken} min` : "—",
-          },
-          { label: "Correct", value: result.correctAnswers ?? "—" },
-          { label: "Wrong", value: result.wrongAnswers ?? "—" },
-          { label: "Skipped", value: result.skippedAnswers ?? "—" },
-        ].map((row) => (
+        {rows.map((row) => (
           <div key={row.label} className="tr-detail-row">
             <span className="tr-detail-label">{row.label}</span>
             <span className="tr-detail-value">{row.value}</span>
@@ -326,7 +350,6 @@ export default function TeacherResults() {
   const [sortKey, setSortKey] = useState("score_desc");
   const [showSort, setShowSort] = useState(false);
   const [page, setPage] = useState(1);
-  const [pageSize, setPageSize] = useState(10);
 
   const [toast, setToast] = useState(null);
 
@@ -381,22 +404,27 @@ export default function TeacherResults() {
 
   const sorted = sortResults(filtered, sortKey);
   const totalRows = sorted.length;
-  const totalPages = Math.max(1, Math.ceil(totalRows / pageSize));
-  const paginated = sorted.slice((page - 1) * pageSize, page * pageSize);
+  const totalPages = Math.max(1, Math.ceil(totalRows / PAGE_SIZE));
+  const paginated = sorted.slice((page - 1) * PAGE_SIZE, page * PAGE_SIZE);
+  const rangeStart = totalRows === 0 ? 0 : (page - 1) * PAGE_SIZE + 1;
+  const rangeEnd = Math.min(page * PAGE_SIZE, totalRows);
 
-  // Stats from all results
+  // FIX: stats now computed only from EVALUATED sessions with a real
+  // percentage, so in-progress/pending-review attempts don't drag
+  // "Avg Score" down to 0 or get miscounted as failing.
   const attempted = results.length;
-  const passed = results.filter(
-    (r) => r.status?.toUpperCase() === "PASSED",
-  ).length;
-  const avgPct = attempted
+  const evaluated = results.filter(
+    (r) => r.status === "EVALUATED" && r.percentage != null,
+  );
+  const passed = evaluated.filter((r) => r.percentage >= 40).length;
+  const avgPct = evaluated.length
     ? (
-        results.reduce((s, r) => s + (r.percentage ?? 0), 0) / attempted
+        evaluated.reduce((s, r) => s + r.percentage, 0) / evaluated.length
       ).toFixed(1)
-    : 0;
-  const topScore = attempted
-    ? Math.max(...results.map((r) => r.percentage ?? 0)).toFixed(1)
-    : 0;
+    : "0.0";
+  const topScore = evaluated.length
+    ? Math.max(...evaluated.map((r) => r.percentage)).toFixed(1)
+    : "0.0";
 
   const selectedPaper = papers.find((p) => p.id === selectedPaperId);
 
@@ -463,10 +491,12 @@ export default function TeacherResults() {
                       setSelectedPaperId(paper.id);
                       setSearch("");
                     }}>
-                    {paper.aiGenerated && (
-                      <Zap size={12} className="tr-paper-tab-zap" />
-                    )}
-                    <span className="tr-paper-tab-title">{paper.title}</span>
+                    <div className="tr-paper-tab-title-row">
+                      {paper.aiGenerated && (
+                        <Zap size={13} className="tr-paper-tab-zap" />
+                      )}
+                      <span className="tr-paper-tab-title">{paper.title}</span>
+                    </div>
                     <span className="tr-paper-tab-type">
                       {fmtExamType(paper.examType)}
                     </span>
@@ -585,8 +615,8 @@ export default function TeacherResults() {
 
                 {/* Results info */}
                 <div className="tr-results-info">
-                  Showing {paginated.length > 0 ? (page - 1) * pageSize + 1 : 0}
-                  –{Math.min(page * pageSize, totalRows)} of {totalRows} result
+                  Showing {paginated.length > 0 ? rangeStart : 0}–{rangeEnd} of{" "}
+                  {totalRows} result
                   {totalRows !== 1 ? "s" : ""}
                   {search && ` matching "${search}"`}
                 </div>
@@ -623,11 +653,13 @@ export default function TeacherResults() {
                         </thead>
                         <tbody>
                           {paginated.map((result, idx) => {
-                            const pct = result.percentage ?? 0;
+                            const hasPct = result.percentage != null;
+                            const pct = hasPct ? result.percentage : 0;
+                            const meta = statusMeta(result.status);
                             return (
                               <tr key={result.id ?? idx}>
                                 <td className="tr-cell-no">
-                                  {(page - 1) * pageSize + idx + 1}
+                                  {rangeStart + idx}
                                 </td>
 
                                 {/* Student */}
@@ -653,12 +685,14 @@ export default function TeacherResults() {
                                   )}
                                 </td>
 
-                                {/* Score */}
+                                {/* Score — FIX: real field names */}
                                 <td>
                                   <span className="tr-score-cell">
-                                    <strong>{result.totalScore ?? "—"}</strong>
+                                    <strong>
+                                      {result.totalMarksObtained ?? "—"}
+                                    </strong>
                                     <span className="tr-score-sep">/</span>
-                                    {result.maxScore ?? "—"}
+                                    {result.totalMarks ?? "—"}
                                   </span>
                                 </td>
 
@@ -666,7 +700,7 @@ export default function TeacherResults() {
                                 <td>
                                   <div className="tr-pct-cell">
                                     <span className="tr-pct-value">
-                                      {pct.toFixed(1)}%
+                                      {hasPct ? `${pct.toFixed(1)}%` : "—"}
                                     </span>
                                     <div className="tr-pct-bar-wrap">
                                       <div
@@ -682,16 +716,16 @@ export default function TeacherResults() {
                                 {/* Grade */}
                                 <td>
                                   <span
-                                    className={`tr-grade ${gradeClass(pct)}`}>
-                                    {calcGrade(pct)}
+                                    className={`tr-grade ${hasPct ? gradeClass(pct) : "tr-grade--pending"}`}>
+                                    {hasPct ? calcGrade(pct) : "–"}
                                   </span>
                                 </td>
 
-                                {/* Status */}
+                                {/* Status — FIX: real status labels */}
                                 <td>
                                   <span
-                                    className={`tr-status-badge ${statusClass(result.status)}`}>
-                                    {result.status ?? "Pending"}
+                                    className={`tr-status-badge ${meta.cls}`}>
+                                    {meta.label}
                                   </span>
                                 </td>
 
@@ -724,8 +758,8 @@ export default function TeacherResults() {
                   page={page}
                   totalPages={totalPages}
                   setPage={setPage}
-                  pageSize={pageSize}
-                  setPageSize={setPageSize}
+                  rangeStart={rangeStart}
+                  rangeEnd={rangeEnd}
                   totalRows={totalRows}
                 />
               </>
